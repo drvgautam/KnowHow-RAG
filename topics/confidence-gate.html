@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confidence Gate — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-4" class="back-link">&larr; Back to Module 4</a>
+    <span class="mod-badge badge-medium topic-badge">intermediate</span>
+    <h1 class="topic-title">Retrieval Confidence Gate</h1>
+    <p class="topic-subtitle">The most important guardrail — stop before calling the LLM</p>
+
+    <div class="topic-section">
+      <h3>The core idea</h3>
+      <p>After retrieval and re-ranking, check whether the top results are actually relevant. If the best retrieved chunk scores below a confidence threshold, <strong>do not send it to the LLM</strong>. Instead, return a controlled "I don't have information on that" response.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Why this is the most important guardrail</h3>
+      <p>Most hallucinations in RAG systems don't come from the LLM making things up unprompted. They come from the LLM being given loosely relevant context and doing its best to answer from it. A passage about "employee benefits" might be retrieved for a question about "parental leave" — and the LLM will extrapolate an answer that sounds reasonable but isn't in the source.</p>
+      <p>The confidence gate prevents this entire class of failures.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>How to implement it</h3>
+      <ul>
+        <li><strong>Use the cross-encoder score</strong> from re-ranking as the confidence signal — it's already computed, and it measures query-document relevance directly.</li>
+        <li><strong>Set a threshold</strong> based on your evaluation set. Typical starting point: if the top result's cross-encoder score is below 0.5, gate it.</li>
+        <li><strong>Calibrate with production data:</strong> Run the gate in shadow mode first (log decisions but don't enforce), review the gated queries, and adjust the threshold.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>What to say when the gate triggers</h3>
+      <p>Never say "I don't know" — that's ambiguous. Instead, be specific:</p>
+      <ul>
+        <li>"I couldn't find relevant information in the knowledge base for this question."</li>
+        <li>"This topic doesn't appear to be covered in the available documentation. You may want to contact [department]."</li>
+        <li>Optionally: show the user what <em>was</em> found, with a warning that it may not be relevant.</li>
+      </ul>
+    </div>
+
+    <div class="insight-box">
+      <p class="insight-text">A "sorry, I can't answer that" response costs 10ms. A hallucinated answer costs user trust. The confidence gate is a cheap insurance policy against the most expensive failure mode.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="citation-enforcement.html">Citation enforcement &rarr;</a>
+      <a href="faithfulness-scoring.html">Faithfulness scoring &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

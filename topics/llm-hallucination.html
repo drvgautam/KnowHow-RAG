@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM Hallucination — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-1" class="back-link">&larr; Back to Module 1</a>
+    <span class="mod-badge badge-beginner topic-badge">beginner</span>
+    <h1 class="topic-title">LLM Hallucination</h1>
+    <p class="topic-subtitle">Why models confidently invent facts — and what you can do about it</p>
+
+    <div class="topic-section">
+      <h3>What is hallucination?</h3>
+      <p>An LLM "hallucinates" when it generates text that sounds plausible but is factually incorrect, fabricated, or unsupported by any training data. The model does not know it is wrong — it has no internal fact-checker. It simply predicts the most probable next token given everything before it.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>A concrete example</h3>
+      <p>Suppose you ask: <em>"What is the return policy for Acme Corp?"</em></p>
+      <p>An LLM without access to Acme's actual documents might respond: <em>"Acme Corp offers a 30-day return policy with full refund on all items."</em> This sounds confident and professional — but it may be entirely made up. The real policy might be 14 days, or only on specific product lines, or require the original receipt.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Why does it happen?</h3>
+      <ul>
+        <li><strong>Statistical prediction, not knowledge retrieval:</strong> LLMs predict text based on patterns seen during training. They optimize for fluency and coherence, not factual accuracy.</li>
+        <li><strong>Training on noisy data:</strong> The internet contains contradictory and outdated information. The model absorbs all of it without a mechanism to verify truth.</li>
+        <li><strong>No epistemic uncertainty:</strong> The model has no way to say "I'm 30% sure about this." It always generates with the same apparent confidence.</li>
+        <li><strong>Instruction-following pressure:</strong> When asked to answer, the model wants to comply. Saying "I don't know" is rarely the most probable completion.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>How RAG mitigates hallucination</h3>
+      <p>RAG addresses this by grounding the model's generation in retrieved evidence. Instead of asking "what do you know about X?", a RAG system says "here are the relevant documents — answer based only on these."</p>
+      <ul>
+        <li>The LLM generates from <strong>provided context</strong>, not from memory</li>
+        <li>Citations can be verified by the user</li>
+        <li>If no relevant document is found, the system can say "I don't have information on that" instead of guessing</li>
+      </ul>
+    </div>
+
+    <div class="insight-box">
+      <p class="insight-text">Key takeaway: hallucination is not a bug in the model — it is a fundamental property of how language models work. RAG does not eliminate hallucination entirely, but it shifts the problem from "inventing facts from nothing" to "misinterpreting provided evidence," which is far more controllable.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="knowledge-cutoff.html">Next: Knowledge cutoff &rarr;</a>
+      <a href="rag-overview.html">RAG overview &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

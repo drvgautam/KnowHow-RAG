@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG Overview — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-1" class="back-link">&larr; Back to Module 1</a>
+    <span class="mod-badge badge-beginner topic-badge">beginner</span>
+    <h1 class="topic-title">What is RAG?</h1>
+    <p class="topic-subtitle">Retrieval-Augmented Generation — search first, then generate</p>
+
+    <div class="topic-section">
+      <h3>The core idea</h3>
+      <p>Retrieval-Augmented Generation (RAG) is a pattern that combines two capabilities:</p>
+      <ul>
+        <li><strong>Retrieval:</strong> Find the most relevant documents or passages from a knowledge base given a user's question.</li>
+        <li><strong>Generation:</strong> Feed those passages to an LLM and ask it to synthesize a coherent answer grounded in the retrieved evidence.</li>
+      </ul>
+      <p>Neither component works well alone. Retrieval finds evidence but can't synthesize it. Generation synthesizes but hallucinates without evidence. Together, they produce grounded, fluent answers.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>How it works (simplified)</h3>
+      <ul>
+        <li><strong>Step 1:</strong> User asks a question: "What's the parental leave policy?"</li>
+        <li><strong>Step 2:</strong> The system searches an indexed document corpus and retrieves the top matching passages.</li>
+        <li><strong>Step 3:</strong> The retrieved passages are inserted into the LLM's prompt as context.</li>
+        <li><strong>Step 4:</strong> The LLM generates an answer using only the provided context, with citations.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Why not just fine-tune the LLM?</h3>
+      <p>Fine-tuning bakes knowledge into model weights. This means:</p>
+      <ul>
+        <li>Updating information requires retraining (expensive, slow)</li>
+        <li>You can't easily audit where an answer came from</li>
+        <li>Access control becomes nearly impossible — the model either knows something or it doesn't</li>
+        <li>Fine-tuning teaches style and format well, but is unreliable for memorizing specific facts</li>
+      </ul>
+      <p>RAG keeps knowledge external and retrievable, making it auditable, updatable, and access-controlled.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>The two pipelines</h3>
+      <p>A RAG system has two distinct pipelines:</p>
+      <ul>
+        <li><strong>Offline pipeline:</strong> Processes documents into searchable chunks and indexes them. Runs on a schedule (e.g. weekly).</li>
+        <li><strong>Online pipeline:</strong> Handles each user query in real time — retrieves, re-ranks, assembles context, and generates the answer.</li>
+      </ul>
+    </div>
+
+    <div class="insight-box">
+      <p class="insight-text">The power of RAG is separation of concerns: retrieval quality can be measured independently of generation quality. When the system gives a bad answer, you can trace it to either "wrong documents retrieved" or "right documents, bad synthesis" — and fix the right component.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="llm-hallucination.html">&larr; LLM hallucination</a>
+      <a href="embeddings.html">Embeddings &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

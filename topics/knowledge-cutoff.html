@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knowledge Cutoff — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-1" class="back-link">&larr; Back to Module 1</a>
+    <span class="mod-badge badge-beginner topic-badge">beginner</span>
+    <h1 class="topic-title">Knowledge Cutoff</h1>
+    <p class="topic-subtitle">Training data is frozen in time — and that creates real problems</p>
+
+    <div class="topic-section">
+      <h3>What is a knowledge cutoff?</h3>
+      <p>Every LLM is trained on a snapshot of data collected up to a specific date. After that date, the model has no awareness of new events, policy changes, product launches, or updated documents. This boundary is called the <strong>knowledge cutoff</strong>.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Why this matters for enterprise use</h3>
+      <ul>
+        <li><strong>Policy updates:</strong> Your company changed its expense reimbursement policy last month. The LLM still knows the old one.</li>
+        <li><strong>Product changes:</strong> A new feature was shipped. The LLM describes the old behavior.</li>
+        <li><strong>Regulatory compliance:</strong> New regulations took effect. The LLM gives advice based on outdated rules.</li>
+        <li><strong>Personnel changes:</strong> The org chart changed. The LLM references people who left the company.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>The real danger: silent staleness</h3>
+      <p>The model does not know what it does not know. It will answer questions about topics that changed after its cutoff with the same confidence as topics that haven't changed. There is no warning label, no "this might be outdated" caveat. The user has no way to tell whether the answer reflects current reality.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>How RAG solves the cutoff problem</h3>
+      <p>RAG bypasses the cutoff entirely by retrieving documents from a live, maintained corpus. The model's training data becomes irrelevant for factual questions because the answer comes from the retrieved context, not from the model's parameters.</p>
+      <p>As long as the document corpus is kept up to date, the RAG system always has access to the latest information — regardless of when the LLM was trained.</p>
+    </div>
+
+    <div class="analogy-box">
+      <p class="analogy-text">Think of the knowledge cutoff as an encyclopedia printed in 2023. It's thorough and well-written, but it can't tell you about anything that happened in 2024. RAG is like giving the encyclopedia reader access to today's newspaper alongside the encyclopedia.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="llm-hallucination.html">&larr; LLM hallucination</a>
+      <a href="rag-overview.html">RAG overview &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

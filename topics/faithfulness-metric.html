@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faithfulness Metric — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-5" class="back-link">&larr; Back to Module 5</a>
+    <span class="mod-badge badge-both topic-badge">both levels</span>
+    <h1 class="topic-title">Faithfulness as a Metric</h1>
+    <p class="topic-subtitle">Are the generated claims actually grounded in the retrieved context?</p>
+
+    <div class="topic-section">
+      <h3>Definition</h3>
+      <p>Faithfulness measures the fraction of claims in the generated answer that are supported by the retrieved context. A faithfulness score of 1.0 means every claim is grounded; 0.0 means none are.</p>
+      <pre class="code-block">Faithfulness = |supported claims| / |total claims|</pre>
+    </div>
+
+    <div class="topic-section">
+      <h3>How to calculate it</h3>
+      <ul>
+        <li><strong>Step 1 — Claim extraction:</strong> Break the generated answer into individual claims. Each factual statement is a claim. "Employees get 15 days of leave and can carry over 5 days" contains two claims.</li>
+        <li><strong>Step 2 — Entailment check:</strong> For each claim, run an NLI model with the retrieved context as premise and the claim as hypothesis. If the model predicts "entailment," the claim is supported.</li>
+        <li><strong>Step 3 — Aggregate:</strong> Faithfulness = number of entailed claims / total claims.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Faithfulness vs. correctness</h3>
+      <p>These are different metrics:</p>
+      <ul>
+        <li><strong>Faithfulness:</strong> "Is the answer consistent with the provided context?" (internal consistency)</li>
+        <li><strong>Correctness:</strong> "Is the answer actually true?" (external truth)</li>
+      </ul>
+      <p>A RAG system can only guarantee faithfulness — it cannot guarantee the source documents are correct. But faithfulness is the metric you can measure and optimize automatically.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Benchmark targets</h3>
+      <ul>
+        <li><strong>0.95+:</strong> Excellent. The system rarely generates unsupported claims.</li>
+        <li><strong>0.85-0.95:</strong> Good. Occasional paraphrase drift or minor extrapolations.</li>
+        <li><strong>Below 0.85:</strong> Problem. The system is regularly generating claims not in the context. Investigate prompt, context assembly, or retrieval quality.</li>
+      </ul>
+    </div>
+
+    <div class="insight-box">
+      <p class="insight-text">LLM-as-judge faithfulness scoring (using GPT-4 or Claude to evaluate) is more accurate than NLI models but 100x more expensive and too slow for real-time scoring. Use NLI for production, LLM-as-judge for offline evaluation.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="retrieval-metrics.html">&larr; Retrieval metrics</a>
+      <a href="eval-sets.html">Building eval sets &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

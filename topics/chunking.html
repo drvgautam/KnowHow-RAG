@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chunking Strategy — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-2" class="back-link">&larr; Back to Module 2</a>
+    <span class="mod-badge badge-beginner topic-badge">beginner</span>
+    <h1 class="topic-title">Why Chunking Matters</h1>
+    <p class="topic-subtitle">The highest-leverage decision in your RAG pipeline</p>
+
+    <div class="topic-section">
+      <h3>What is chunking?</h3>
+      <p>Chunking is the process of splitting documents into smaller pieces that can be individually retrieved. Each chunk becomes a unit of retrieval — when a user asks a question, the system returns the most relevant <em>chunks</em>, not entire documents.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Why chunk size matters</h3>
+      <ul>
+        <li><strong>Too small</strong> (~50 tokens): The chunk lacks context. "The deadline is March 15" without knowing what deadline or which year is useless.</li>
+        <li><strong>Too large</strong> (~2000 tokens): The chunk contains too many topics. The embedding becomes a blurry average of unrelated ideas, making it match weakly with any specific query.</li>
+        <li><strong>Right-sized</strong> (~200-500 tokens): The chunk covers one coherent idea with enough context to be useful on its own.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Three granularity levels</h3>
+      <ul>
+        <li><strong>Sentence-level (~100 tokens):</strong> Best for precise fact lookups — "What is the deductible for Plan A?"</li>
+        <li><strong>Paragraph-level (~400 tokens):</strong> The workhorse size for most questions — enough context for the LLM to generate a complete answer.</li>
+        <li><strong>Section-level (~900 tokens):</strong> Used for context expansion — when the top chunk is found, its parent section can be pulled in for surrounding context.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Overlap is essential</h3>
+      <p>Fixed-size chunking without overlap is the most common beginner mistake. Consider a sentence that falls exactly on a chunk boundary:</p>
+      <pre class="code-block">Chunk 1: "...employees are entitled to"
+Chunk 2: "15 days of annual leave..."</pre>
+      <p>Neither chunk alone answers "How many leave days do employees get?" With a 10-20% overlap between chunks, the complete sentence appears in at least one chunk.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Semantic vs. fixed-size chunking</h3>
+      <p><strong>Fixed-size:</strong> Split every N tokens. Simple but ignores document structure.</p>
+      <p><strong>Semantic:</strong> Split at natural boundaries — paragraphs, headings, topic shifts. Preserves coherence but requires understanding document structure.</p>
+      <p>Best practice: use semantic boundaries (headings, paragraphs) as primary split points, with a maximum size limit as a backstop.</p>
+    </div>
+
+    <div class="warning-box">
+      <p class="warning-text">Tables are chunking's hardest problem. A table row without its header is meaningless. Always keep table headers attached to every chunk that contains table data.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="embeddings.html">&larr; Embeddings</a>
+      <a href="hnsw.html">HNSW &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

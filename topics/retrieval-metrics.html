@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retrieval Metrics — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-5" class="back-link">&larr; Back to Module 5</a>
+    <span class="mod-badge badge-both topic-badge">both levels</span>
+    <h1 class="topic-title">Recall@K, MRR, and NDCG</h1>
+    <p class="topic-subtitle">Three retrieval metrics every RAG engineer must know</p>
+
+    <div class="topic-section">
+      <h3>Recall@K</h3>
+      <p><strong>What it measures:</strong> Of all the relevant documents that exist, what fraction appears in the top K results?</p>
+      <pre class="code-block">Recall@K = |relevant docs in top K| / |all relevant docs|
+
+Example: 3 relevant docs exist. Top 10 results
+contain 2 of them.
+Recall@10 = 2/3 = 0.667</pre>
+      <p><strong>Why it matters for RAG:</strong> If the relevant passage isn't in the retrieved set, the LLM can't use it. Recall@K is the ceiling on answer quality. Typical target: Recall@10 > 0.85.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>MRR — Mean Reciprocal Rank</h3>
+      <p><strong>What it measures:</strong> On average, how high does the first relevant result appear?</p>
+      <pre class="code-block">RR = 1 / rank_of_first_relevant_result
+MRR = average(RR) across all queries
+
+Example: Query 1 → first relevant at rank 1 → RR=1.0
+         Query 2 → first relevant at rank 3 → RR=0.33
+         Query 3 → first relevant at rank 2 → RR=0.50
+         MRR = (1.0 + 0.33 + 0.50) / 3 = 0.61</pre>
+      <p><strong>Why it matters:</strong> MRR tells you how quickly users get what they need. An MRR of 0.9+ means the right answer is almost always in position 1.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>NDCG@K — Normalized Discounted Cumulative Gain</h3>
+      <p><strong>What it measures:</strong> How good is the ranking quality, considering that higher positions matter more?</p>
+      <pre class="code-block">DCG@K  = sum( relevance_i / log2(i+1) ) for i=1..K
+IDCG@K = DCG@K with perfect ranking
+NDCG@K = DCG@K / IDCG@K</pre>
+      <p><strong>Why it matters:</strong> Unlike Recall@K (binary: present or not), NDCG considers the <em>order</em> of results. Two systems might both have Recall@10 = 0.8, but the one with NDCG@10 = 0.9 puts the best results at the top.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Which metric when?</h3>
+      <ul>
+        <li><strong>Recall@K:</strong> Use to evaluate whether your retrieval pipeline finds the right documents at all. The most important metric during development.</li>
+        <li><strong>MRR:</strong> Use when you care about the first result (e.g., single-answer questions).</li>
+        <li><strong>NDCG@K:</strong> Use when you care about the full ranking (e.g., showing multiple source documents to the user).</li>
+      </ul>
+    </div>
+
+    <div class="topic-nav">
+      <a href="chunking-eval.html">&larr; Chunking eval</a>
+      <a href="faithfulness-metric.html">Faithfulness metric &rarr;</a>
+      <a href="eval-sets.html">Building eval sets &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>
