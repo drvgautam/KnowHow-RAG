@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HNSW Explained — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-2" class="back-link">&larr; Back to Module 2</a>
+    <span class="mod-badge badge-beginner topic-badge">beginner</span>
+    <h1 class="topic-title">HNSW Explained</h1>
+    <p class="topic-subtitle">How approximate nearest neighbor search makes RAG fast</p>
+
+    <div class="topic-section">
+      <h3>The problem</h3>
+      <p>If you have 10 million document chunks, each represented as a 1536-dimensional vector, finding the most similar vector to a query by comparing against all 10 million would take too long for real-time use. You need a way to find the <em>approximate</em> nearest neighbors in milliseconds, not seconds.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>What is HNSW?</h3>
+      <p><strong>Hierarchical Navigable Small World</strong> (HNSW) is the most widely used algorithm for approximate nearest neighbor (ANN) search. It builds a multi-layer graph where:</p>
+      <ul>
+        <li><strong>Bottom layer:</strong> Contains all vectors, connected to their nearest neighbors.</li>
+        <li><strong>Upper layers:</strong> Contain progressively fewer vectors, acting as "express lanes" for navigation.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>How search works</h3>
+      <ul>
+        <li>Start at the top layer (fewest nodes, longest jumps)</li>
+        <li>Greedily navigate toward the query vector</li>
+        <li>Drop to the next layer and refine</li>
+        <li>Repeat until the bottom layer, where the final nearest neighbors are found</li>
+      </ul>
+      <p>This typically finds the true nearest neighbors 95-99% of the time, while only examining a tiny fraction of the total vectors.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Key parameters</h3>
+      <ul>
+        <li><strong>M</strong> (connections per node): Higher M = more accurate but more memory. Default: 16.</li>
+        <li><strong>ef_construction</strong>: How many candidates to consider when building the graph. Higher = better index quality, slower build.</li>
+        <li><strong>ef_search</strong>: How many candidates to consider at query time. Higher = more accurate, slower search. This is tunable at runtime.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>HNSW in practice</h3>
+      <p>Most vector databases (Pinecone, Weaviate, Qdrant, pgvector) use HNSW as their default index type. Typical performance:</p>
+      <ul>
+        <li>10M vectors: ~5ms per query</li>
+        <li>100M vectors: ~15ms per query</li>
+        <li>Memory: ~1.5GB per million 1536-dim vectors</li>
+      </ul>
+    </div>
+
+    <div class="analogy-box">
+      <p class="analogy-text">HNSW is like looking up a word in a dictionary. You don't read every page — you jump to roughly the right section (top layer), then narrow down by page (middle layers), then scan the entries (bottom layer). The multi-layer structure is what makes it fast.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="embeddings.html">&larr; Embeddings</a>
+      <a href="chunking.html">&larr; Chunking</a>
+      <a href="rrf.html">RRF &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

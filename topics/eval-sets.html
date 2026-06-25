@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building Eval Sets — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-5" class="back-link">&larr; Back to Module 5</a>
+    <span class="mod-badge badge-both topic-badge">both levels</span>
+    <h1 class="topic-title">Building Evaluation Sets</h1>
+    <p class="topic-subtitle">How to bootstrap a golden eval set without months of manual labeling</p>
+
+    <div class="topic-section">
+      <h3>What is a golden eval set?</h3>
+      <p>A set of (question, expected answer, source document) triples that you use as ground truth to evaluate your RAG pipeline. You need at least 100-200 examples for statistically meaningful evaluation; 500+ is better.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>The LLM-assisted approach</h3>
+      <ul>
+        <li><strong>Step 1:</strong> Select 50-100 representative documents from your corpus (cover different topics, formats, difficulty levels).</li>
+        <li><strong>Step 2:</strong> For each document, use an LLM to generate 3-5 questions that the document answers. Prompt: "Given this passage, generate questions that a user might ask that this passage would answer."</li>
+        <li><strong>Step 3:</strong> For each question, use the LLM to generate a reference answer with citations to the source passage.</li>
+        <li><strong>Step 4:</strong> Have a human review and correct the generated QA pairs. This is 5x faster than writing them from scratch.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Question diversity</h3>
+      <p>Your eval set must cover different question types:</p>
+      <ul>
+        <li><strong>Factoid:</strong> "What is the deductible for Plan A?" (single fact lookup)</li>
+        <li><strong>Multi-hop:</strong> "How does Plan A's deductible compare to Plan B's?" (requires two documents)</li>
+        <li><strong>Conditional:</strong> "Am I eligible for parental leave if I'm part-time?" (requires understanding conditions)</li>
+        <li><strong>Unanswerable:</strong> "What is the dress code?" (no document covers this — tests the confidence gate)</li>
+        <li><strong>Ambiguous:</strong> "What's the policy on leave?" (too vague — tests query clarification)</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Maintaining the eval set</h3>
+      <p>The eval set must evolve with your corpus. When documents are updated, the corresponding QA pairs may become stale. Include a "last verified" date on each example and re-verify on a quarterly cycle.</p>
+    </div>
+
+    <div class="analogy-box">
+      <p class="analogy-text">Think of the eval set as your unit tests. You wouldn't ship software without tests, and you shouldn't ship a RAG system without an eval set. Just as tests catch regressions in code, the eval set catches regressions in retrieval and generation quality.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="retrieval-metrics.html">&larr; Retrieval metrics</a>
+      <a href="faithfulness-metric.html">&larr; Faithfulness metric</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

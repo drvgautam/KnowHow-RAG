@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chunking Evaluation — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-5" class="back-link">&larr; Back to Module 5</a>
+    <span class="mod-badge badge-both topic-badge">both levels</span>
+    <h1 class="topic-title">Chunking Evaluation</h1>
+    <p class="topic-subtitle">The most neglected evaluation layer — and how to do it right</p>
+
+    <div class="topic-section">
+      <h3>Why most teams skip it</h3>
+      <p>Chunking feels like a pre-processing step, not a model. Teams treat it as "set and forget" — choose a chunk size, split the documents, move on. But chunking quality directly determines retrieval quality: if the answer is split across two chunks, no amount of re-ranking will fix it.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Three evaluation dimensions</h3>
+      <ul>
+        <li>
+          <strong>Boundary tests:</strong> Do chunks split at natural boundaries (paragraphs, sections), or do they cut sentences in half? Sample 100 random chunks and manually check whether each one starts and ends at a coherent boundary.
+        </li>
+        <li>
+          <strong>Coherence audits:</strong> Can each chunk be understood on its own, without reading the surrounding document? A chunk that says "As mentioned above, the policy allows..." is incoherent in isolation. The pronoun and reference resolution is lost.
+        </li>
+        <li>
+          <strong>Table fidelity:</strong> Are tables preserved with their headers? Does each table chunk include column names and row context? Tables are the single hardest content type to chunk correctly.
+        </li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Automated checks</h3>
+      <ul>
+        <li><strong>Sentence completeness:</strong> Flag chunks that start or end mid-sentence (regex for missing capital at start or missing punctuation at end).</li>
+        <li><strong>Orphan reference detection:</strong> Flag chunks that start with pronouns ("It", "They", "This") or references ("As noted above") without an antecedent.</li>
+        <li><strong>Size distribution:</strong> Plot chunk sizes. A healthy distribution is unimodal. Bimodal distributions suggest the chunker is splitting some document types poorly.</li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <p class="warning-text">Chunking evaluation must be repeated every time you change the chunking strategy, add a new document type, or update the parsing pipeline. It's not a one-time check.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="retrieval-metrics.html">Retrieval metrics &rarr;</a>
+      <a href="faithfulness-metric.html">Faithfulness metric &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

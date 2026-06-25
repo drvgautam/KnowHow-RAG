@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reciprocal Rank Fusion — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-3" class="back-link">&larr; Back to Module 3</a>
+    <span class="mod-badge badge-medium topic-badge">intermediate</span>
+    <h1 class="topic-title">Reciprocal Rank Fusion (RRF)</h1>
+    <p class="topic-subtitle">How to merge two ranked lists from different retrieval systems</p>
+
+    <div class="topic-section">
+      <h3>The problem</h3>
+      <p>In hybrid retrieval, you run two separate searches: dense (semantic/embedding) and sparse (BM25/keyword). Each returns a ranked list. But their scores are on completely different scales — cosine similarity ranges from -1 to 1, while BM25 scores can be any positive number. You can't just average them.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>The RRF formula</h3>
+      <p>RRF ignores raw scores entirely and uses only <strong>rank positions</strong>:</p>
+      <pre class="code-block">RRF_score(doc) = sum( 1 / (k + rank_i(doc)) )
+                  for each retrieval system i
+
+where k = 60 (a constant that prevents top-ranked
+documents from dominating too heavily)</pre>
+    </div>
+
+    <div class="topic-section">
+      <h3>A numerical example</h3>
+      <p>Suppose Document A is ranked #1 by dense search and #5 by BM25:</p>
+      <pre class="code-block">RRF(A) = 1/(60+1) + 1/(60+5) = 0.0164 + 0.0154 = 0.0318</pre>
+      <p>Document B is ranked #3 by dense search and #2 by BM25:</p>
+      <pre class="code-block">RRF(B) = 1/(60+3) + 1/(60+2) = 0.0159 + 0.0161 = 0.0320</pre>
+      <p>Document B wins despite not being #1 in either list — it's consistently good in both.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Why RRF works well</h3>
+      <ul>
+        <li><strong>Scale-invariant:</strong> Only rank positions matter, so incompatible score scales are a non-issue.</li>
+        <li><strong>Rewards consistency:</strong> A document ranked well in multiple systems gets a higher fused score than one ranked #1 in one system but absent from others.</li>
+        <li><strong>No tuning needed:</strong> The k=60 constant works well across most use cases. Unlike learned fusion weights, RRF requires no training data.</li>
+      </ul>
+    </div>
+
+    <div class="insight-box">
+      <p class="insight-text">RRF typically outperforms either dense or sparse retrieval alone by 5-15% on standard benchmarks. The gains come from the two systems having complementary strengths: dense catches paraphrases, sparse catches exact identifiers.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="bi-vs-cross-encoder.html">Bi vs cross-encoder &rarr;</a>
+      <a href="hyde.html">HyDE &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

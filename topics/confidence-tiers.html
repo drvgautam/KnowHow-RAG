@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confidence Tiers — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-4" class="back-link">&larr; Back to Module 4</a>
+    <span class="mod-badge badge-medium topic-badge">intermediate</span>
+    <h1 class="topic-title">Answer Confidence Tiers</h1>
+    <p class="topic-subtitle">Communicating certainty to users — high, medium, and low confidence</p>
+
+    <div class="topic-section">
+      <h3>Why tiers matter</h3>
+      <p>Users treat all AI-generated answers equally unless you tell them otherwise. A confidence tier system gives users the context they need to decide how much to trust each answer and whether to verify it themselves.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>The three tiers</h3>
+      <ul>
+        <li>
+          <strong>High confidence</strong> — Retrieval score above threshold, high faithfulness score, single authoritative source.
+          <br>UI treatment: normal answer display with green indicator. User can trust this answer for most purposes.
+        </li>
+        <li>
+          <strong>Medium confidence</strong> — Retrieval score is moderate, or multiple sources partially agree, or faithfulness score has minor issues.
+          <br>UI treatment: answer displayed with amber indicator and a note: "This answer may not be complete. Please verify with the source documents."
+        </li>
+        <li>
+          <strong>Low confidence</strong> — Retrieval score is near the gate threshold, or sources conflict, or faithfulness score is low.
+          <br>UI treatment: answer displayed with red indicator, prominent warning, and direct links to source documents for manual review.
+        </li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Calculating the tier</h3>
+      <p>The tier is a composite of three signals:</p>
+      <ul>
+        <li><strong>Retrieval confidence:</strong> The cross-encoder score of the top retrieved chunk</li>
+        <li><strong>Source agreement:</strong> Do multiple retrieved chunks agree or contradict?</li>
+        <li><strong>Faithfulness score:</strong> The NLI model's assessment of the generated answer</li>
+      </ul>
+      <p>A simple weighted formula or a decision tree maps these three signals to one of the three tiers.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>User experience impact</h3>
+      <p>Studies show that users who see confidence tiers:</p>
+      <ul>
+        <li>Are 3x more likely to verify low-confidence answers</li>
+        <li>Report higher trust in the system overall (because they feel it's being honest)</li>
+        <li>Are less likely to propagate incorrect information</li>
+      </ul>
+    </div>
+
+    <div class="insight-box">
+      <p class="insight-text">The counterintuitive finding: showing users that the system is sometimes uncertain actually increases their overall trust, not decreases it. Overconfident systems that are occasionally wrong erode trust much faster.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="confidence-gate.html">&larr; Confidence gate</a>
+      <a href="faithfulness-scoring.html">&larr; Faithfulness scoring</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

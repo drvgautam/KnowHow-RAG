@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Citation Enforcement — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-4" class="back-link">&larr; Back to Module 4</a>
+    <span class="mod-badge badge-medium topic-badge">intermediate</span>
+    <h1 class="topic-title">Citation Enforcement</h1>
+    <p class="topic-subtitle">Every claim needs a source — how to make the LLM cite its evidence</p>
+
+    <div class="topic-section">
+      <h3>Why citations matter</h3>
+      <p>Without citations, the user cannot verify whether the answer actually came from the retrieved documents or was hallucinated. Citations create <strong>accountability</strong> — both for the system and for the user reviewing the answer.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>How to enforce citations</h3>
+      <p>The enforcement happens in the LLM's system prompt and context formatting:</p>
+      <pre class="code-block">System prompt:
+"Answer the user's question using ONLY the
+provided context. For every factual claim,
+include a citation in the format [Source N].
+If the answer is not in the context, say so."
+
+Context format:
+[Source 1] HR Policy v3.2, Section 4.1:
+"Employees receive 15 days of annual leave..."
+
+[Source 2] Benefits FAQ, Last updated 2024-01:
+"Part-time employees receive pro-rated leave..."</pre>
+    </div>
+
+    <div class="topic-section">
+      <h3>What good citations look like</h3>
+      <ul>
+        <li><strong>Inline:</strong> "Employees receive 15 days of annual leave [Source 1], with part-time employees receiving a pro-rated amount [Source 2]."</li>
+        <li><strong>Clickable:</strong> In the UI, citations link to the original document or highlight the specific passage.</li>
+        <li><strong>Granular:</strong> Each claim has its own citation, not just one citation for the whole answer.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Common failures</h3>
+      <ul>
+        <li><strong>Phantom citations:</strong> The model invents a source number that doesn't exist. Validate citation references against the provided context programmatically.</li>
+        <li><strong>Lazy citations:</strong> The model cites a source for the entire answer instead of per-claim. More aggressive prompting and few-shot examples help.</li>
+        <li><strong>Paraphrase drift:</strong> The model paraphrases so heavily that the cited source no longer supports the claim. Faithfulness scoring catches this.</li>
+      </ul>
+    </div>
+
+    <div class="insight-box">
+      <p class="insight-text">Citations serve a dual purpose: they let users verify answers, and they constrain the model's behavior. A model that must cite every claim is less likely to generate unsupported statements because it "knows" it needs evidence for each one.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="confidence-gate.html">&larr; Confidence gate</a>
+      <a href="faithfulness-scoring.html">Faithfulness scoring &rarr;</a>
+      <a href="confidence-tiers.html">Confidence tiers &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

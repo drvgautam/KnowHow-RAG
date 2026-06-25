@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bi-encoder vs Cross-encoder — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-3" class="back-link">&larr; Back to Module 3</a>
+    <span class="mod-badge badge-medium topic-badge">intermediate</span>
+    <h1 class="topic-title">Bi-encoder vs Cross-encoder</h1>
+    <p class="topic-subtitle">The fundamental speed-accuracy trade-off in information retrieval</p>
+
+    <div class="topic-section">
+      <h3>Bi-encoder (for retrieval)</h3>
+      <p>A bi-encoder processes the query and each document <strong>independently</strong>. It produces a vector for the query and a vector for each document, then computes similarity (e.g., cosine distance) between them.</p>
+      <ul>
+        <li>Document vectors can be <strong>pre-computed and cached</strong></li>
+        <li>At query time, only the query needs to be encoded</li>
+        <li>Similarity lookup via ANN index takes milliseconds</li>
+        <li>Scales to millions of documents</li>
+      </ul>
+      <p><strong>Weakness:</strong> Because query and document are encoded separately, the model cannot attend to interactions between specific query words and specific document words.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Cross-encoder (for re-ranking)</h3>
+      <p>A cross-encoder processes the query and document <strong>together</strong> as a single input. It sees the full interaction between query tokens and document tokens through self-attention.</p>
+      <ul>
+        <li>Much more accurate relevance scoring</li>
+        <li>Can catch nuances like negation, conditional statements, specific entity matches</li>
+        <li>Cannot pre-compute — must run for every (query, document) pair at query time</li>
+        <li>Too slow for initial retrieval, but fast enough for re-ranking 50-100 candidates</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>The two-stage pattern</h3>
+      <p>Production RAG systems use both:</p>
+      <ul>
+        <li><strong>Stage 1 — Retrieval (bi-encoder):</strong> Fast, approximate. Returns top ~80 candidates from millions.</li>
+        <li><strong>Stage 2 — Re-ranking (cross-encoder):</strong> Slow, precise. Scores the 80 candidates and keeps the top 5-10.</li>
+      </ul>
+      <p>This gives you the best of both worlds: the speed of bi-encoders with the accuracy of cross-encoders.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Latency comparison</h3>
+      <pre class="code-block">Bi-encoder retrieval:  ~10ms (ANN lookup)
+Cross-encoder re-rank: ~300ms (80 candidates)
+Total:                 ~310ms</pre>
+      <pre class="code-block">Cross-encoder on full corpus: 10M docs x 3ms each
+                              = ~8.3 hours per query
+                              (not viable)</pre>
+    </div>
+
+    <div class="insight-box">
+      <p class="insight-text">The MiniLM cross-encoder (22M parameters) achieves near-state-of-the-art re-ranking accuracy while being small enough to run on CPU. It's the most common choice for production RAG re-ranking.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="rrf.html">&larr; RRF</a>
+      <a href="hyde.html">HyDE &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

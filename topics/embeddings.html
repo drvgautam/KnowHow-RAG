@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text Embeddings — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-2" class="back-link">&larr; Back to Module 2</a>
+    <span class="mod-badge badge-beginner topic-badge">beginner</span>
+    <h1 class="topic-title">What is an Embedding?</h1>
+    <p class="topic-subtitle">Numbers that capture meaning — the foundation of semantic search</p>
+
+    <div class="topic-section">
+      <h3>The intuition</h3>
+      <p>An embedding is a list of numbers (a <strong>vector</strong>) that represents the meaning of a piece of text. Two texts that mean similar things will have similar vectors, even if they use completely different words.</p>
+      <p>For example, "How do I reset my password?" and "I can't log in, need to change credentials" would have very similar embeddings, even though they share almost no words.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>How it works</h3>
+      <p>An embedding model (like OpenAI's <code>text-embedding-3-large</code>) takes any text input and outputs a fixed-length vector — typically 1536 or 3072 dimensions. Each dimension captures some learned aspect of meaning.</p>
+      <p>You don't need to understand what each dimension means. What matters is that <strong>similar meanings produce nearby vectors</strong> in this high-dimensional space.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>What does "similarity" mean?</h3>
+      <p>The most common measure is <strong>cosine similarity</strong> — the angle between two vectors. A cosine similarity of 1.0 means identical direction (identical meaning); 0.0 means completely unrelated.</p>
+      <ul>
+        <li>"Reset my password" vs "Change my credentials" &rarr; ~0.89 (very similar)</li>
+        <li>"Reset my password" vs "What are your office hours?" &rarr; ~0.21 (not similar)</li>
+        <li>"Reset my password" vs "Reset my password" &rarr; 1.0 (identical)</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Why embeddings matter for RAG</h3>
+      <p>In a RAG system, both the document chunks and the user's query are converted to embeddings. The system then finds the chunks whose embeddings are closest to the query's embedding — this is <strong>semantic search</strong>.</p>
+      <p>Unlike keyword search, semantic search understands that "PTO policy" and "vacation days rules" are about the same thing.</p>
+    </div>
+
+    <div class="analogy-box">
+      <p class="analogy-text">Think of embeddings as GPS coordinates for meaning. Just as GPS coordinates let you find nearby restaurants without knowing their names, embeddings let you find relevant documents without matching exact keywords.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="chunking.html">Chunking &rarr;</a>
+      <a href="hnsw.html">HNSW &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

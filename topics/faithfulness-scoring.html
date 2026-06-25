@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faithfulness Scoring — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-4" class="back-link">&larr; Back to Module 4</a>
+    <span class="mod-badge badge-medium topic-badge">intermediate</span>
+    <h1 class="topic-title">Faithfulness Scoring</h1>
+    <p class="topic-subtitle">Using NLI models to verify that generated answers are grounded in context</p>
+
+    <div class="topic-section">
+      <h3>What is faithfulness?</h3>
+      <p>A generated answer is <strong>faithful</strong> if every claim it makes is supported by the retrieved context. Faithfulness is different from correctness — an answer can be faithful to the context but wrong if the source document is wrong. But an unfaithful answer is always a system failure.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>How NLI-based scoring works</h3>
+      <p><strong>Natural Language Inference (NLI)</strong> models classify whether a hypothesis is entailed by, contradicted by, or neutral to a premise. In faithfulness scoring:</p>
+      <ul>
+        <li><strong>Premise:</strong> The retrieved context</li>
+        <li><strong>Hypothesis:</strong> Each sentence of the generated answer</li>
+        <li><strong>Classification:</strong> entailment (supported), contradiction (wrong), or neutral (not supported)</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Running it in parallel with streaming</h3>
+      <p>The key insight: faithfulness scoring runs <strong>during</strong> generation, not after. As the LLM streams its response:</p>
+      <ul>
+        <li>Each completed sentence is sent to the NLI model</li>
+        <li>The NLI model (a distilled DeBERTa variant) scores it in ~50ms</li>
+        <li>By the time the full response is generated, all sentences have been scored</li>
+        <li>The user perceives zero added latency</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>What to do with low scores</h3>
+      <ul>
+        <li><strong>Per-sentence flagging:</strong> Highlight unfaithful sentences in the UI with a warning</li>
+        <li><strong>Aggregate score:</strong> If overall faithfulness drops below a threshold, add a warning banner</li>
+        <li><strong>Automatic retry:</strong> For critical applications, regenerate the answer with a stricter prompt</li>
+        <li><strong>Logging:</strong> Always log faithfulness scores for monitoring and evaluation</li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <p class="warning-text">NLI models can have false positives (marking faithful text as contradicted) especially with complex conditional statements. Calibrate your threshold on production data before enforcing hard blocks.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="confidence-gate.html">&larr; Confidence gate</a>
+      <a href="citation-enforcement.html">&larr; Citation enforcement</a>
+      <a href="confidence-tiers.html">Confidence tiers &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

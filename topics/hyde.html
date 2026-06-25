@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HyDE Technique — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html#module-3" class="back-link">&larr; Back to Module 3</a>
+    <span class="mod-badge badge-medium topic-badge">intermediate</span>
+    <h1 class="topic-title">HyDE — Hypothetical Document Embedding</h1>
+    <p class="topic-subtitle">Embed hypothetical answers to improve retrieval</p>
+
+    <div class="topic-section">
+      <h3>The problem with embedding raw queries</h3>
+      <p>User queries are short and colloquial: "how many vacation days do I get?" But the documents in your corpus are written in formal, structured language: "Employees are entitled to 15 days of paid annual leave per calendar year."</p>
+      <p>The embedding of the query and the embedding of the answer live in different regions of the vector space because they <em>sound</em> very different, even though they're about the same topic.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>The HyDE approach</h3>
+      <ul>
+        <li><strong>Step 1:</strong> Give the user's query to an LLM and ask it to generate a <em>hypothetical</em> answer — a short passage that looks like what a real document might say.</li>
+        <li><strong>Step 2:</strong> Embed the hypothetical answer (not the original query).</li>
+        <li><strong>Step 3:</strong> Use that embedding to search the document index.</li>
+      </ul>
+      <p>The hypothetical answer is closer in style and vocabulary to the actual documents, so its embedding lands nearer to the real answer in vector space.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Example</h3>
+      <pre class="code-block">User query: "how many vacation days do I get?"
+
+Hypothetical answer (LLM-generated):
+"Full-time employees receive 15 days of paid
+ annual leave per calendar year, accrued monthly.
+ Part-time employees receive a pro-rated amount."
+
+This hypothetical answer is embedded and used
+for retrieval instead of the raw question.</pre>
+    </div>
+
+    <div class="topic-section">
+      <h3>When to use HyDE</h3>
+      <ul>
+        <li><strong>Works well:</strong> When queries are short, informal, or use jargon different from the corpus.</li>
+        <li><strong>Works less well:</strong> When queries are already document-like, or when the corpus uses the same casual language.</li>
+        <li><strong>Cost:</strong> One additional LLM call per query (~200ms with a fast model). Use a small, fast model for this — it doesn't need to be accurate, just plausible.</li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <p class="warning-text">The hypothetical answer may contain hallucinated facts. This is actually fine — you're only using its embedding to find real documents, not presenting it to the user. The factual content of the hypothetical answer doesn't matter; only its position in embedding space matters.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="rrf.html">&larr; RRF</a>
+      <a href="bi-vs-cross-encoder.html">&larr; Bi vs cross-encoder</a>
+      <a href="confidence-gate.html">Confidence gate &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>
