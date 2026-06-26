@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Query Routing & Decomposition — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html" class="back-link">&larr; Back to Roadmap</a>
+    <span class="mod-badge badge-advanced topic-badge">advanced</span>
+    <h1 class="topic-title">Query Routing &amp; Decomposition</h1>
+    <p class="topic-subtitle">Sending each question to the right pipeline — and breaking complex ones apart</p>
+
+    <div class="topic-section">
+      <h3>Why one pipeline isn't enough</h3>
+      <p>Not all queries are equal. "What's the WiFi password?" is a simple lookup. "How does our leave policy compare across our three regional offices?" requires retrieval from multiple document sets and comparative reasoning. Sending both through the same pipeline wastes resources on the first and under-serves the second.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Query routing</h3>
+      <p>A router classifies each incoming query and directs it to the appropriate pipeline:</p>
+      <ul>
+        <li><strong>Simple factoid:</strong> Direct retrieval + generation. Fastest path, lowest cost.</li>
+        <li><strong>Multi-document:</strong> Parallel retrieval from multiple indexes, then fusion. Medium complexity.</li>
+        <li><strong>Analytical/comparative:</strong> Agentic RAG with multi-step retrieval and reasoning. Slowest but most capable.</li>
+        <li><strong>Out of scope:</strong> No retrieval needed. Return a canned response immediately.</li>
+        <li><strong>Structured data:</strong> Route to SQL/API instead of vector search. "How many tickets were closed last week?" should query a database, not a document corpus.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Implementing the router</h3>
+      <ul>
+        <li><strong>LLM-based:</strong> Use a fast, cheap LLM (Claude Haiku, GPT-4o-mini) with a classification prompt. Most flexible, ~100ms latency.</li>
+        <li><strong>Classifier-based:</strong> Train a lightweight text classifier (distilled BERT) on labeled query types. Faster (~10ms) but requires training data.</li>
+        <li><strong>Rule-based:</strong> Pattern matching and keyword heuristics. Fastest but brittle. Good as a first filter before ML-based routing.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Query decomposition</h3>
+      <p>Complex questions that can't be answered with a single retrieval should be decomposed into sub-queries:</p>
+      <pre class="code-block">Original: "Compare parental leave policies
+across our US, UK, and Singapore offices"
+
+Decomposed:
+1. "What is the parental leave policy for
+    the US office?"
+2. "What is the parental leave policy for
+    the UK office?"
+3. "What is the parental leave policy for
+    the Singapore office?"
+
+Each sub-query runs independently, results
+are merged for comparative generation.</pre>
+    </div>
+
+    <div class="topic-section">
+      <h3>Step-back prompting</h3>
+      <p>Sometimes the original query is too specific for effective retrieval. Step-back prompting generates a broader version:</p>
+      <ul>
+        <li>Original: "Can a part-time contractor in the London office claim dental benefits?"</li>
+        <li>Step-back: "What are the benefit eligibility rules for contractors?"</li>
+      </ul>
+      <p>The broader query retrieves the policy framework. The specific query then filters within that context.</p>
+    </div>
+
+    <div class="insight-box">
+      <p class="insight-text">A well-designed router reduces average query cost by 40-60% while improving answer quality on complex queries. Most queries (70-80%) are simple lookups that don't need the full pipeline.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="fine-tuning.html">&larr; Fine-tuning</a>
+      <a href="rag-mlops.html">RAG MLOps &rarr;</a>
+      <a href="agentic-rag.html">Agentic RAG &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

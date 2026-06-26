@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG Monitoring & MLOps — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html" class="back-link">&larr; Back to Roadmap</a>
+    <span class="mod-badge badge-advanced topic-badge">advanced</span>
+    <h1 class="topic-title">RAG Monitoring &amp; MLOps</h1>
+    <p class="topic-subtitle">A RAG system at launch is the worst version it will ever be — if you close the loop correctly</p>
+
+    <div class="topic-section">
+      <h3>Why monitoring matters</h3>
+      <p>The query distribution shifts as the company changes. Documents go stale the moment they're updated. User expectations evolve. Without monitoring, you won't know your system is degrading until users start complaining — and by then, trust is already eroded.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Four pillars of RAG monitoring</h3>
+      <ol>
+        <li>
+          <strong>Query drift detection:</strong> Track the embedding distribution of incoming queries with a rolling 30-day window. A drift spike means users are asking about topics not yet covered. Implement using cosine distance between the centroid of this week's queries and last month's.
+        </li>
+        <li>
+          <strong>Per-stage latency tracking:</strong> Break P95 latency down by pipeline stage (retrieval, re-ranking, generation). If P95 degrades, you need to know which stage is the bottleneck immediately — not after a week of investigation.
+        </li>
+        <li>
+          <strong>Quality metrics:</strong> Track rolling faithfulness rate, no-answer rate, and citation accuracy. A spike in no-answer rate could be a corpus gap (users asking about something undocumented) or a retrieval regression (indexing broke). You tell them apart by checking Recall@K on your eval set.
+        </li>
+        <li>
+          <strong>Corpus health probes:</strong> After every weekly batch, run known QA pairs against the top 100 most-queried documents. If Recall@K drops on a high-traffic document after an update, the update silently broke retrieval for that topic. Probes catch it within hours rather than weeks.
+        </li>
+      </ol>
+    </div>
+
+    <div class="topic-section">
+      <h3>The feedback loop</h3>
+      <ul>
+        <li><strong>Implicit signals:</strong> User reformulations (the first answer was wrong), thumbs up/down, click-through on citations, session abandonment.</li>
+        <li><strong>Explicit signals:</strong> "Was this helpful?" ratings, error reports, user corrections.</li>
+        <li><strong>Closing the loop:</strong> Aggregate signals into labeled training data. Periodically retrain embedding models and re-rankers on production-derived labels.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Alerting and SLOs</h3>
+      <p>Define service level objectives for your RAG system:</p>
+      <ul>
+        <li>P95 end-to-end latency &lt; 5 seconds</li>
+        <li>Faithfulness rate &gt; 0.90 (rolling 7-day)</li>
+        <li>No-answer rate &lt; 15% (excluding truly out-of-scope queries)</li>
+        <li>Retrieval Recall@10 &gt; 0.85 on eval set (checked after each re-index)</li>
+      </ul>
+      <p>Alert when any SLO is breached for more than 2 consecutive measurement windows.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>A/B testing RAG changes</h3>
+      <p>Every pipeline change (new chunking strategy, updated embedding model, different re-ranker) should be A/B tested:</p>
+      <ul>
+        <li>Run the new pipeline in shadow mode alongside production</li>
+        <li>Compare retrieval metrics on the same queries</li>
+        <li>Only promote to production when the eval set shows improvement and no regressions</li>
+      </ul>
+    </div>
+
+    <div class="analogy-box">
+      <p class="analogy-text">The improvement loop in one sentence: monitor for drift, identify the failing stage, trace it to corpus gap or technical regression, fix the right thing, re-evaluate, ship.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="query-routing.html">&larr; Query routing</a>
+      <a href="confidence-tiers.html">Confidence tiers &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

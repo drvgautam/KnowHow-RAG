@@ -12,53 +12,41 @@
     <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
   </header>
   <main class="content topic-page">
-    <a href="../index.html" class="back-link">&larr; Back to all modules</a>
+    <a href="../index.html" class="back-link">&larr; Back to Roadmap</a>
     <h1 class="topic-title">What to Learn Next</h1>
-    <p class="topic-subtitle">Related topics to explore after understanding RAG fundamentals</p>
+    <p class="topic-subtitle">Your learning path after the KnowHow RAG roadmap</p>
 
     <div class="topic-section">
-      <h3>Advanced RAG patterns</h3>
+      <h3>Hands-on projects</h3>
       <ul>
-        <li><strong>GraphRAG:</strong> Instead of flat document chunks, build a knowledge graph from your corpus. Entities and relationships become first-class retrievable objects. Best for domains with complex entity relationships (org charts, supply chains, legal contracts).</li>
-        <li><strong>Multi-modal RAG:</strong> Extend retrieval to images, diagrams, and tables using vision-language models. Useful when documents contain charts, screenshots, or architectural diagrams that text-only RAG misses.</li>
-        <li><strong>Agentic RAG:</strong> The system decides what to retrieve based on intermediate reasoning steps. Instead of one retrieval per query, the agent may search, read, reason, then search again with a refined query.</li>
+        <li><strong>Week 1 — Minimal RAG:</strong> Build a pipeline with a vector database, basic chunking, and an LLM. Get end-to-end working before optimizing anything.</li>
+        <li><strong>Week 2-3 — Production hardening:</strong> Add hybrid retrieval (BM25 + dense), cross-encoder re-ranking, and a confidence gate. Build your first evaluation set of 50 QA pairs.</li>
+        <li><strong>Month 2 — Observability:</strong> Implement per-stage latency tracking, faithfulness scoring, and corpus health probes. Set up SLOs and alerting.</li>
+        <li><strong>Month 3 — Advanced patterns:</strong> Try <a href="agentic-rag.html">agentic RAG</a> for multi-step queries, experiment with <a href="advanced-chunking.html">contextual retrieval</a>, and A/B test pipeline changes.</li>
       </ul>
-    </div>
-
-    <div class="topic-section">
-      <h3>Fine-tuning</h3>
-      <ul>
-        <li><strong>Embedding fine-tuning:</strong> Train your embedding model on domain-specific (query, relevant document) pairs. Improves retrieval for specialized vocabularies (medical, legal, engineering). Typically 10-20% recall improvement on domain-specific queries.</li>
-        <li><strong>Re-ranker fine-tuning:</strong> Train the cross-encoder on your domain's relevance judgments. Even a small amount of labeled data (500-1000 pairs) significantly improves re-ranking precision.</li>
-        <li><strong>LLM fine-tuning:</strong> Fine-tune the generation model to follow your citation format, domain tone, and response structure. Better for style and format than for knowledge injection.</li>
-      </ul>
-    </div>
-
-    <div class="topic-section">
-      <h3>AI Agents</h3>
-      <p>RAG is one tool in an agent's toolbox. An AI agent can decide when to use RAG, when to call an API, when to ask the user for clarification, and when to decompose a complex question into sub-queries. Understanding RAG deeply is a prerequisite for building effective agents.</p>
     </div>
 
     <div class="topic-section">
       <h3>Evaluation frameworks</h3>
       <ul>
-        <li><strong>RAGAS:</strong> An open-source framework for evaluating RAG pipelines with metrics like faithfulness, answer relevance, and context recall.</li>
-        <li><strong>LLM-as-judge:</strong> Using a capable LLM to evaluate another LLM's outputs against reference answers. More flexible than NLI models but requires careful prompt engineering to avoid bias.</li>
+        <li><strong>RAGAS:</strong> Open-source framework for evaluating RAG pipelines with metrics like faithfulness, answer relevance, and context recall.</li>
+        <li><strong>LLM-as-judge:</strong> Using a capable LLM to evaluate outputs against reference answers. More flexible than NLI models but requires careful prompt engineering to avoid bias.</li>
+        <li><strong>DeepEval &amp; TruLens:</strong> Production-grade evaluation tools with tracing, automated testing, and regression detection.</li>
       </ul>
     </div>
 
     <div class="topic-section">
-      <h3>Recommended learning path</h3>
+      <h3>Broader AI engineering</h3>
       <ul>
-        <li><strong>Next week:</strong> Build a minimal RAG pipeline with a vector database, basic chunking, and an LLM. Get end-to-end working first.</li>
-        <li><strong>Next month:</strong> Add hybrid retrieval (BM25 + dense), re-ranking, and a confidence gate. Build your evaluation set.</li>
-        <li><strong>Next quarter:</strong> Implement production monitoring, corpus health probes, and faithfulness scoring. Consider embedding fine-tuning if retrieval metrics plateau.</li>
+        <li><strong>AI agents:</strong> RAG is one tool in an agent's toolbox. Agents decide when to use RAG, when to call APIs, and when to decompose complex questions. Deep RAG knowledge is a prerequisite.</li>
+        <li><strong>Prompt engineering:</strong> System prompts, few-shot examples, and structured output formats shape how the LLM uses retrieved context.</li>
+        <li><strong>LLM fine-tuning:</strong> Fine-tune the generation model for your domain's citation format, tone, and response structure. Better for style than knowledge injection.</li>
       </ul>
     </div>
 
     <div class="topic-nav">
       <a href="common-mistakes.html">&larr; Common mistakes</a>
-      <a href="../index.html">&larr; All modules</a>
+      <a href="../index.html">Back to Roadmap &rarr;</a>
     </div>
   </main>
   <footer class="site-footer"><p>KnowHow RAG</p></footer>

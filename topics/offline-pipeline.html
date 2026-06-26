@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Offline Indexing Pipeline — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html" class="back-link">&larr; Back to Roadmap</a>
+    <span class="mod-badge badge-medium topic-badge">intermediate</span>
+    <h1 class="topic-title">The Offline Indexing Pipeline</h1>
+    <p class="topic-subtitle">How raw documents become searchable chunks — the batch process that runs before any query is served</p>
+
+    <div class="topic-section">
+      <h3>Why a separate offline pipeline?</h3>
+      <p>The offline pipeline processes your document corpus into a searchable index. It runs on a schedule (daily, weekly) and is completely decoupled from user queries. This separation means you can re-index without downtime and optimize each pipeline independently.</p>
+      <p>Getting this pipeline wrong cannot be fixed downstream. If a document is poorly chunked or its metadata is missing, no amount of re-ranking or prompt engineering will recover the lost information.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>The five stages</h3>
+      <ol>
+        <li><strong>Document ingestion:</strong> PDFs, Word, HTML, Markdown arrive as unstructured bytes. Naive PDF extraction corrupts tables — use layout-aware parsers (AWS Textract, Unstructured.io). Scanned documents need OCR first.</li>
+        <li><strong>Metadata extraction:</strong> Title, author, department, last-modified date, access tier. This becomes a filtering layer at query time. You cannot add metadata later without re-processing the entire corpus.</li>
+        <li><strong>Chunking:</strong> Split documents into retrievable pieces. Sentence-level (~100 tokens) for precise lookups, paragraph-level (~400 tokens) for most questions, section-level (~900 tokens) for context expansion. Always use 10-20% overlap.</li>
+        <li><strong>Embedding:</strong> Each chunk is converted to a dense vector using an embedding model. OpenAI text-embedding-3-large or Cohere embed-v3 are strong defaults. Domain-specific corpora may need fine-tuned embeddings.</li>
+        <li><strong>Indexing:</strong> Write vectors into both HNSW (dense) and BM25 (sparse) indexes. Two indexes enable hybrid retrieval — dense catches semantic meaning, sparse catches exact identifiers and product codes.</li>
+      </ol>
+    </div>
+
+    <div class="topic-section">
+      <h3>Document format challenges</h3>
+      <ul>
+        <li><strong>Tables:</strong> Require special handling — each chunk must include column headers. A table row without its header is meaningless.</li>
+        <li><strong>Images with text:</strong> Diagrams, flowcharts, and screenshots need OCR or vision models to extract embedded text.</li>
+        <li><strong>Nested documents:</strong> A PDF with embedded spreadsheets or a Word doc with linked files must be recursively unpacked.</li>
+        <li><strong>Encoding issues:</strong> Legacy documents in non-UTF8 encodings corrupt silently. Always detect and convert encoding before processing.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Incremental vs. full re-indexing</h3>
+      <p><strong>Full re-index:</strong> Process the entire corpus from scratch. Simple, but expensive for large corpora (millions of documents).</p>
+      <p><strong>Incremental:</strong> Only process new or modified documents. Track document hashes to detect changes. Requires careful handling of deletions — removing a document means removing all its chunks from the index.</p>
+    </div>
+
+    <div class="warning-box">
+      <p class="warning-text">Never skip metadata extraction to save time. Without department tags and access tiers, you cannot implement access control at query time — and adding it later requires a full re-index of every document.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="online-pipeline.html">Online pipeline &rarr;</a>
+      <a href="chunking.html">Chunking deep-dive &rarr;</a>
+      <a href="embeddings.html">Embeddings &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>
