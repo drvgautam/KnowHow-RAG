@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-modal RAG — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html" class="back-link">&larr; Back to Roadmap</a>
+    <span class="mod-badge badge-advanced topic-badge">advanced</span>
+    <h1 class="topic-title">Multi-modal RAG</h1>
+    <p class="topic-subtitle">Extending retrieval beyond text — images, tables, diagrams, and charts</p>
+
+    <div class="topic-section">
+      <h3>Why text-only RAG falls short</h3>
+      <p>Enterprise documents are rarely pure text. Engineering specs contain architecture diagrams. Financial reports have charts. HR policies include org chart images. Medical records contain scans. If your RAG system can only retrieve text, it misses information locked in visual content.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Three approaches to multi-modal RAG</h3>
+      <ul>
+        <li>
+          <strong>Approach 1 — Convert to text:</strong> Use OCR, table extraction models, and chart-to-data tools to convert all visual content to text before indexing. Simple to implement but lossy — spatial relationships in diagrams are hard to describe textually.
+        </li>
+        <li>
+          <strong>Approach 2 — Multi-modal embeddings:</strong> Use vision-language models (CLIP, SigLIP) to embed images directly into the same vector space as text. A query like "network architecture" retrieves both text passages and relevant diagrams. The challenge: vision embeddings and text embeddings may not align well without fine-tuning.
+        </li>
+        <li>
+          <strong>Approach 3 — Vision-language generation:</strong> Retrieve images as raw content and pass them to a multi-modal LLM (GPT-4V, Claude) for interpretation. The model "reads" the image and incorporates visual information into its answer. Most accurate but highest cost per query.
+        </li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Table retrieval</h3>
+      <p>Tables deserve special treatment. They are the most common non-text content and the hardest to handle:</p>
+      <ul>
+        <li><strong>Serialization:</strong> Convert tables to markdown or HTML format, preserving headers and alignment.</li>
+        <li><strong>Table summarization:</strong> Generate a natural language summary of each table for embedding. The summary captures what the table is about; the raw table is included in the context.</li>
+        <li><strong>Header propagation:</strong> Every chunk containing table data must include the column headers and table title.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Practical recommendations</h3>
+      <ul>
+        <li>Start with Approach 1 (convert to text) for 80% of use cases</li>
+        <li>Add Approach 3 (vision LLM) for high-value documents with critical diagrams</li>
+        <li>Approach 2 (multi-modal embeddings) is most useful when you have a large corpus of images that need to be searchable by text queries</li>
+        <li>Always store the original visual content alongside any text conversion so it can be shown to the user</li>
+      </ul>
+    </div>
+
+    <div class="insight-box">
+      <p class="insight-text">ColPali represents a paradigm shift: instead of extracting text from document images, it embeds the entire page image directly using vision transformers. Retrieval operates over page screenshots, eliminating the lossy text extraction step entirely.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="graph-rag.html">&larr; GraphRAG</a>
+      <a href="advanced-chunking.html">Advanced chunking &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Serving Pipeline — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html" class="back-link">&larr; Back to Roadmap</a>
+    <span class="mod-badge badge-medium topic-badge">intermediate</span>
+    <h1 class="topic-title">The Online Serving Pipeline</h1>
+    <p class="topic-subtitle">What happens every time a user asks a question — 7 stages in under 5 seconds</p>
+
+    <div class="topic-section">
+      <h3>The latency budget</h3>
+      <p>The entire pipeline must complete in under 5 seconds end-to-end. Every stage adds latency, so every stage must earn its place. Streaming the LLM response delivers first tokens at ~1.5s, making the system feel fast even if total latency is 4.5s.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>The seven stages</h3>
+      <ol>
+        <li><strong>Query understanding (~100ms):</strong> Rewrite the user's colloquial question into search-friendly form. HyDE generates a hypothetical answer and embeds that instead of the raw question — it sits closer to real document passages in embedding space.</li>
+        <li><strong>Intent classification (~10ms):</strong> Is this query in scope? A lightweight classifier catches off-topic questions before expensive retrieval runs. "I don't cover that" costs 10ms; a failed retrieval costs 800ms.</li>
+        <li><strong>Access control filter (~5ms):</strong> Scope retrieval to the user's permission set. Enforced server-side before any index query. Must be chunk-level, not document-level — documents can have restricted appendices with public preambles.</li>
+        <li><strong>Hybrid retrieval (~50ms):</strong> Run dense ANN + sparse BM25 in parallel. Fuse results with Reciprocal Rank Fusion (RRF), which combines by rank position, not raw scores. Output: ~80 fused candidates.</li>
+        <li><strong>Cross-encoder re-ranking (~300ms):</strong> Score each candidate jointly with the query using token-level attention. MiniLM scores 80 candidates in ~300ms. Output: top 5-10.</li>
+        <li><strong>Context assembly (~50ms):</strong> Expand top chunks by pulling neighboring chunks for context. Compress by scoring each sentence for relevance and discarding noise. Less context = fewer hallucinations.</li>
+        <li><strong>LLM generation (~2-4s):</strong> Stream the answer with mandatory citations. System prompt enforces: "answer only from provided context; if the answer isn't there, say so."</li>
+      </ol>
+    </div>
+
+    <div class="topic-section">
+      <h3>Pipeline orchestration</h3>
+      <p>Stages 1-3 run sequentially (each depends on the previous). Stage 4 runs two retrievers in parallel. Stage 5-6 run sequentially on the fused results. Stage 7 streams to the user while faithfulness scoring runs in parallel on completed sentences.</p>
+    </div>
+
+    <div class="analogy-box">
+      <p class="analogy-text">Think of retrieval as casting a wide net (80 candidates) and re-ranking as a careful hand-sort of the catch. The LLM is the chef who turns the best fish into a meal — but only what's on the plate in front of it.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="offline-pipeline.html">&larr; Offline pipeline</a>
+      <a href="rrf.html">RRF &rarr;</a>
+      <a href="bi-vs-cross-encoder.html">Bi vs cross-encoder &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

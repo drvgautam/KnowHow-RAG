@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fine-tuning Embeddings & Re-rankers — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html" class="back-link">&larr; Back to Roadmap</a>
+    <span class="mod-badge badge-advanced topic-badge">advanced</span>
+    <h1 class="topic-title">Fine-tuning Embeddings &amp; Re-rankers</h1>
+    <p class="topic-subtitle">When off-the-shelf models hit a ceiling — domain adaptation for retrieval</p>
+
+    <div class="topic-section">
+      <h3>When to fine-tune</h3>
+      <p>General-purpose embedding models are trained on broad web data. They work well for common topics but struggle with domain-specific vocabulary: medical terminology, legal jargon, internal product codenames, engineering acronyms. If your Recall@10 plateaus below 0.85 despite optimizing chunking and query processing, fine-tuning is the next lever.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Fine-tuning the embedding model</h3>
+      <ul>
+        <li><strong>Training data:</strong> You need (query, positive_passage, negative_passage) triplets. 500-2000 triplets is typically enough for meaningful improvement.</li>
+        <li><strong>Hard negatives:</strong> The negative passage should be topically similar but not the correct answer. Use your current retrieval system to find "almost relevant" results — these are the hardest negatives and most informative for training.</li>
+        <li><strong>Loss function:</strong> Contrastive loss (InfoNCE) or triplet loss with in-batch negatives. Multiple Negatives Ranking Loss (MNRL) from sentence-transformers is the standard starting point.</li>
+        <li><strong>Expected gains:</strong> 10-25% improvement in Recall@10 on domain-specific queries. Minimal impact on general queries.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Fine-tuning the cross-encoder re-ranker</h3>
+      <ul>
+        <li><strong>Training data:</strong> (query, passage, relevance_label) pairs. Binary labels (relevant/not relevant) work, but graded labels (0-3) give better results.</li>
+        <li><strong>Base model:</strong> Start with MiniLM or a small DeBERTa model. Fine-tune with cross-entropy loss on your domain's relevance judgments.</li>
+        <li><strong>Data generation:</strong> Use your production logs. Queries where users clicked on a result = positive. Queries where users reformulated = the original results were negative.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Generating training data with LLMs</h3>
+      <p>If you don't have production logs yet:</p>
+      <ol>
+        <li>Select 100-200 representative documents from your corpus</li>
+        <li>Use an LLM to generate 3-5 realistic questions per document</li>
+        <li>The document is the positive passage; run retrieval to find hard negatives</li>
+        <li>Have a domain expert review and correct 20% of examples for quality assurance</li>
+      </ol>
+    </div>
+
+    <div class="topic-section">
+      <h3>The exposure bias problem</h3>
+      <p>Your training data only labels what your current system retrieves. Documents that are never retrieved are never labeled — creating a feedback loop that reinforces existing retrieval patterns. Counter this with:</p>
+      <ul>
+        <li><strong>Hard negative mining:</strong> Deliberately include challenging non-retrieved documents in training</li>
+        <li><strong>Epsilon-greedy exploration:</strong> Randomly surface some non-top-ranked results to generate labels from outside the current retrieval distribution</li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <p class="warning-text">After fine-tuning the embedding model, you must re-embed your entire corpus. This is a full re-indexing operation. Plan for it — on a large corpus, this can take hours and significant compute.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="advanced-chunking.html">&larr; Advanced chunking</a>
+      <a href="query-routing.html">Query routing &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

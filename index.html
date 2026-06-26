@@ -5,220 +5,227 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KnowHow RAG — Learn Retrieval-Augmented Generation</title>
 <link rel="stylesheet" href="css/style.css">
+<style>
+  /* Spectrum roadmap styles */
+  .spectrum-section { margin-bottom: 3rem; }
+  .spectrum-roadmap {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 0 24px;
+    position: relative;
+  }
+  .spectrum-bar {
+    width: 8px;
+    border-radius: 4px;
+    background: linear-gradient(to bottom, var(--color-green), var(--color-amber), var(--color-red));
+    grid-row: 1 / -1;
+    justify-self: center;
+    position: relative;
+  }
+  .spectrum-marker {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 3px solid var(--color-bg);
+    box-shadow: 0 0 0 2px var(--color-border);
+  }
+  .spectrum-marker-beginner {
+    top: 8%;
+    background: var(--color-green);
+  }
+  .spectrum-marker-intermediate {
+    top: 45%;
+    background: var(--color-amber);
+  }
+  .spectrum-marker-advanced {
+    top: 82%;
+    background: var(--color-red);
+  }
+  .spectrum-level {
+    padding-bottom: 2.5rem;
+  }
+  .spectrum-level:last-child {
+    padding-bottom: 0;
+  }
+  .spectrum-level-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .spectrum-level-title {
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .spectrum-level-subtitle {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin-bottom: 14px;
+  }
+</style>
 </head>
 <body>
 <div class="app-shell">
   <header class="top-bar">
     <a href="index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
-    <p class="top-sub">6 modules &middot; beginner &rarr; intermediate</p>
+    <p class="top-sub">beginner &rarr; intermediate &rarr; advanced</p>
   </header>
 
   <main class="content">
     <section class="hero">
-      <h1>RAG System Design</h1>
-      <p class="hero-sub">An educational resource guide for beginners to mid-level learners. Click any concept to dive deeper.</p>
+      <h1>Where are you on the RAG spectrum?</h1>
+      <p class="hero-sub">A visual roadmap from first concepts to production-grade systems. Find your level and start learning.</p>
     </section>
 
-    <!-- Module 1 -->
-    <article class="mod-card" id="module-1">
-      <div class="mod-header">
-        <span class="mod-badge badge-beginner">beginner</span>
-        <div>
-          <h2 class="mod-title">Module 1 — Why RAG exists</h2>
-          <p class="mod-subtitle">The problem plain LLMs cannot solve on their own</p>
-        </div>
-      </div>
-      <div class="analogy-box">
-        <p class="analogy-text">Analogy: an LLM without RAG is like a brilliant consultant who hasn't read your company's files. They're smart, but they can only draw on what they studied years ago — not on last quarter's policy update sitting in your Confluence.</p>
-      </div>
-      <div class="insight-box">
-        <p class="insight-text">Core insight: LLMs predict probable text; they do not retrieve verified facts. RAG separates retrieval (finding the right passage) from generation (writing a fluent answer) so each can be evaluated and improved independently.</p>
-      </div>
-      <div class="concept-grid">
-        <a href="topics/llm-hallucination.html" class="concept-pill">
-          <p class="concept-pill-label">LLM hallucination</p>
-          <p class="concept-pill-desc">Why models confidently invent facts</p>
-        </a>
-        <a href="topics/knowledge-cutoff.html" class="concept-pill">
-          <p class="concept-pill-label">Knowledge cutoff</p>
-          <p class="concept-pill-desc">Training data is frozen in time</p>
-        </a>
-        <a href="topics/rag-overview.html" class="concept-pill">
-          <p class="concept-pill-label">RAG in one sentence</p>
-          <p class="concept-pill-desc">Search first, then generate</p>
-        </a>
-      </div>
-      <div class="progress-bar-wrap"><div class="progress-bar-fill progress-fill-green" style="width:20%"></div></div>
-      <p class="progress-label">Foundation — understand before building</p>
-    </article>
+    <section class="spectrum-section">
+      <div class="spectrum-roadmap">
 
-    <!-- Module 2 -->
-    <article class="mod-card" id="module-2">
-      <div class="mod-header">
-        <span class="mod-badge badge-beginner">beginner</span>
-        <div>
-          <h2 class="mod-title">Module 2 — The offline pipeline</h2>
-          <p class="mod-subtitle">How raw documents become searchable chunks</p>
+        <!-- Gradient bar with level markers -->
+        <div class="spectrum-bar">
+          <span class="spectrum-marker spectrum-marker-beginner"></span>
+          <span class="spectrum-marker spectrum-marker-intermediate"></span>
+          <span class="spectrum-marker spectrum-marker-advanced"></span>
         </div>
-      </div>
-      <p class="mod-intro">This pipeline runs on a schedule (e.g. weekly). It is completely separate from serving user queries. Getting it wrong here cannot be fixed downstream — garbage in, garbage out is nowhere more true than in RAG indexing.</p>
-      <div class="step-row"><div class="step-num">1</div><div><p class="step-text">Document ingestion — PDFs, Word, HTML, Markdown all arrive as unstructured bytes</p><p class="step-sub">Naive PDF text extraction corrupts tables. Use a layout-aware parser (e.g. AWS Textract). Scanned documents need OCR first.</p></div></div>
-      <div class="step-row"><div class="step-num">2</div><div><p class="step-text">Metadata extraction — title, author, department, last-modified date, access tier</p><p class="step-sub">This becomes a filtering layer at query time. You cannot add it later without re-processing the corpus.</p></div></div>
-      <div class="step-row"><div class="step-num">3</div><div><p class="step-text">Chunking — split documents into retrievable pieces at three granularities</p><p class="step-sub">Sentence (~100 tokens) for precise lookups · Paragraph (~400 tokens) for most questions · Section (~900 tokens) for context expansion</p></div></div>
-      <div class="step-row"><div class="step-num">4</div><div><p class="step-text">Embedding — each chunk → dense vector via a text embedding model</p><p class="step-sub">OpenAI text-embedding-3-large is a strong default. Domain-specific corpora (legal, medical, engineering) may need fine-tuning.</p></div></div>
-      <div class="step-row"><div class="step-num">5</div><div><p class="step-text">Indexing — write vectors into HNSW (dense) + BM25 (sparse) indexes</p><p class="step-sub">Two indexes, two retrieval strategies. Dense catches semantic meaning; sparse catches exact product codes and error IDs.</p></div></div>
-      <div class="warning-box">
-        <p class="warning-text">Common beginner mistake: using fixed-size chunking without overlap. A sentence that answers the question may sit exactly on a chunk boundary and get split in half, making it un-retrievable.</p>
-      </div>
-      <div class="concept-grid">
-        <a href="topics/embeddings.html" class="concept-pill">
-          <p class="concept-pill-label">What is an embedding?</p>
-          <p class="concept-pill-desc">Numbers that capture meaning</p>
-        </a>
-        <a href="topics/chunking.html" class="concept-pill">
-          <p class="concept-pill-label">Why chunking matters</p>
-          <p class="concept-pill-desc">The highest-leverage decision</p>
-        </a>
-        <a href="topics/hnsw.html" class="concept-pill">
-          <p class="concept-pill-label">HNSW explained</p>
-          <p class="concept-pill-desc">Fast approximate search</p>
-        </a>
-      </div>
-      <div class="progress-bar-wrap"><div class="progress-bar-fill progress-fill-green" style="width:40%"></div></div>
-    </article>
 
-    <!-- Module 3 -->
-    <article class="mod-card" id="module-3">
-      <div class="mod-header">
-        <span class="mod-badge badge-medium">intermediate</span>
-        <div>
-          <h2 class="mod-title">Module 3 — The online pipeline</h2>
-          <p class="mod-subtitle">What happens every time a user asks a question</p>
+        <!-- Beginner level -->
+        <div class="spectrum-level" id="level-beginner">
+          <div class="spectrum-level-header">
+            <span class="mod-badge badge-beginner">beginner</span>
+            <h2 class="spectrum-level-title">RAG Foundations</h2>
+          </div>
+          <p class="spectrum-level-subtitle">Understand why RAG exists and the core building blocks before writing any code.</p>
+          <div class="concept-grid">
+            <a href="topics/llm-hallucination.html" class="concept-pill">
+              <p class="concept-pill-label">LLM Hallucination</p>
+              <p class="concept-pill-desc">Why models invent facts</p>
+            </a>
+            <a href="topics/knowledge-cutoff.html" class="concept-pill">
+              <p class="concept-pill-label">Knowledge Cutoff</p>
+              <p class="concept-pill-desc">Training data freezes in time</p>
+            </a>
+            <a href="topics/rag-overview.html" class="concept-pill">
+              <p class="concept-pill-label">RAG Overview</p>
+              <p class="concept-pill-desc">Search first, then generate</p>
+            </a>
+            <a href="topics/embeddings.html" class="concept-pill">
+              <p class="concept-pill-label">Text Embeddings</p>
+              <p class="concept-pill-desc">Numbers that capture meaning</p>
+            </a>
+            <a href="topics/chunking.html" class="concept-pill">
+              <p class="concept-pill-label">Chunking Basics</p>
+              <p class="concept-pill-desc">Splitting documents for retrieval</p>
+            </a>
+            <a href="topics/hnsw.html" class="concept-pill">
+              <p class="concept-pill-label">Vector Databases &amp; HNSW</p>
+              <p class="concept-pill-desc">Fast approximate nearest neighbors</p>
+            </a>
+          </div>
         </div>
-      </div>
-      <p class="mod-intro">This pipeline must complete in under 5 seconds end-to-end. Every stage adds latency, so every stage must earn its place. The order is non-negotiable — you cannot re-rank before you retrieve.</p>
-      <div class="step-row"><div class="step-num">1</div><div><p class="step-text">Query understanding — rewrite the user's colloquial question into search-friendly form</p><p class="step-sub">Technique: HyDE (Hypothetical Document Embedding) — generate a short hypothetical answer and embed that instead of the raw question.</p></div></div>
-      <div class="step-row"><div class="step-num">2</div><div><p class="step-text">Intent classification — is this query in scope at all?</p><p class="step-sub">A lightweight classifier catches off-topic questions before any expensive retrieval runs.</p></div></div>
-      <div class="step-row"><div class="step-num">3</div><div><p class="step-text">Access control filter — scope retrieval to the user's permission set</p><p class="step-sub">Enforced server-side before any index query runs. Chunk-level tags, not document-level.</p></div></div>
-      <div class="step-row"><div class="step-num">4</div><div><p class="step-text">Hybrid retrieval — run dense ANN + sparse BM25 in parallel, fuse with RRF</p><p class="step-sub">Reciprocal Rank Fusion combines rankings by position, not by raw score. Result: ~80 fused candidates.</p></div></div>
-      <div class="step-row"><div class="step-num">5</div><div><p class="step-text">Cross-encoder re-ranking — score each candidate jointly with the query</p><p class="step-sub">A cross-encoder reads query and document together, allowing token-level attention. MiniLM scores 80 candidates in ~300ms. Output: top 5–10.</p></div></div>
-      <div class="step-row"><div class="step-num">6</div><div><p class="step-text">Context assembly — expand + compress the retrieved chunks</p><p class="step-sub">Expansion: pull neighboring chunks. Compression: extractive model scores each sentence by relevance. Less context = fewer hallucinations.</p></div></div>
-      <div class="step-row"><div class="step-num">7</div><div><p class="step-text">LLM generation — stream the answer with mandatory citations</p><p class="step-sub">System prompt: "answer only from provided context; if the answer isn't there, say so."</p></div></div>
-      <div class="analogy-box">
-        <p class="analogy-text">Mental model: think of retrieval as casting a wide net (top 80 candidates) and re-ranking as a careful hand-sort of the catch. The LLM is the chef who turns the best fish into a meal — but only what's on the plate in front of it.</p>
-      </div>
-      <div class="concept-grid">
-        <a href="topics/rrf.html" class="concept-pill">
-          <p class="concept-pill-label">RRF explained</p>
-          <p class="concept-pill-desc">Merging two ranked lists</p>
-        </a>
-        <a href="topics/bi-vs-cross-encoder.html" class="concept-pill">
-          <p class="concept-pill-label">Bi-encoder vs cross-encoder</p>
-          <p class="concept-pill-desc">Speed vs accuracy trade-off</p>
-        </a>
-        <a href="topics/hyde.html" class="concept-pill">
-          <p class="concept-pill-label">HyDE technique</p>
-          <p class="concept-pill-desc">Embed hypothetical answers</p>
-        </a>
-      </div>
-      <div class="progress-bar-wrap"><div class="progress-bar-fill progress-fill-amber" style="width:60%"></div></div>
-    </article>
 
-    <!-- Module 4 -->
-    <article class="mod-card" id="module-4">
-      <div class="mod-header">
-        <span class="mod-badge badge-medium">intermediate</span>
-        <div>
-          <h2 class="mod-title">Module 4 — Guardrails</h2>
-          <p class="mod-subtitle">Why production RAG systems fail silently — and how to stop it</p>
+        <!-- Intermediate level -->
+        <div class="spectrum-level" id="level-intermediate">
+          <div class="spectrum-level-header">
+            <span class="mod-badge badge-medium">intermediate</span>
+            <h2 class="spectrum-level-title">Production RAG</h2>
+          </div>
+          <p class="spectrum-level-subtitle">Build, evaluate, and harden a RAG system for real users and real data.</p>
+          <div class="concept-grid">
+            <a href="topics/offline-pipeline.html" class="concept-pill">
+              <p class="concept-pill-label">Offline Indexing Pipeline</p>
+              <p class="concept-pill-desc">Batch ingestion and indexing</p>
+            </a>
+            <a href="topics/online-pipeline.html" class="concept-pill">
+              <p class="concept-pill-label">Online Serving Pipeline</p>
+              <p class="concept-pill-desc">Query-time retrieval and generation</p>
+            </a>
+            <a href="topics/rrf.html" class="concept-pill">
+              <p class="concept-pill-label">Hybrid Retrieval &amp; RRF</p>
+              <p class="concept-pill-desc">Fusing dense and sparse results</p>
+            </a>
+            <a href="topics/bi-vs-cross-encoder.html" class="concept-pill">
+              <p class="concept-pill-label">Bi-encoder vs Cross-encoder</p>
+              <p class="concept-pill-desc">Speed versus accuracy trade-off</p>
+            </a>
+            <a href="topics/hyde.html" class="concept-pill">
+              <p class="concept-pill-label">HyDE Technique</p>
+              <p class="concept-pill-desc">Embed hypothetical answers</p>
+            </a>
+            <a href="topics/confidence-gate.html" class="concept-pill">
+              <p class="concept-pill-label">Guardrails &amp; Confidence Gates</p>
+              <p class="concept-pill-desc">Stop before calling the LLM</p>
+            </a>
+            <a href="topics/citation-enforcement.html" class="concept-pill">
+              <p class="concept-pill-label">Citation Enforcement</p>
+              <p class="concept-pill-desc">Every claim needs a source</p>
+            </a>
+            <a href="topics/faithfulness-scoring.html" class="concept-pill">
+              <p class="concept-pill-label">Faithfulness Scoring (NLI)</p>
+              <p class="concept-pill-desc">Post-generation grounding checks</p>
+            </a>
+            <a href="topics/retrieval-metrics.html" class="concept-pill">
+              <p class="concept-pill-label">Retrieval Metrics (Recall@K, MRR, NDCG)</p>
+              <p class="concept-pill-desc">Measuring retrieval quality</p>
+            </a>
+            <a href="topics/eval-sets.html" class="concept-pill">
+              <p class="concept-pill-label">Building Evaluation Sets</p>
+              <p class="concept-pill-desc">LLM-assisted annotation pipelines</p>
+            </a>
+          </div>
         </div>
-      </div>
-      <p class="mod-intro">Most RAG hallucinations happen not because the LLM makes things up unprompted, but because retrieval failed and the model was handed a loosely relevant context and told to fill in the gaps.</p>
-      <div class="concept-grid">
-        <a href="topics/confidence-gate.html" class="concept-pill">
-          <p class="concept-pill-label">Confidence gate</p>
-          <p class="concept-pill-desc">Stop before calling the LLM</p>
-        </a>
-        <a href="topics/citation-enforcement.html" class="concept-pill">
-          <p class="concept-pill-label">Citation enforcement</p>
-          <p class="concept-pill-desc">Every claim needs a source</p>
-        </a>
-        <a href="topics/faithfulness-scoring.html" class="concept-pill">
-          <p class="concept-pill-label">Faithfulness scoring</p>
-          <p class="concept-pill-desc">NLI model, post-generation</p>
-        </a>
-        <a href="topics/confidence-tiers.html" class="concept-pill">
-          <p class="concept-pill-label">Confidence tiers in UI</p>
-          <p class="concept-pill-desc">High / medium / low output</p>
-        </a>
-      </div>
-      <div class="insight-box">
-        <p class="insight-text">Key insight: faithfulness scoring runs in parallel with response streaming — the NLI model checks each completed sentence while the LLM is generating the next one. The user perceives zero added latency.</p>
-      </div>
-      <div class="warning-box">
-        <p class="warning-text">Contradiction handling: if two retrieved chunks conflict (e.g. one policy says 15 days, a newer one says 12), the LLM will try to silently average them. The assembly layer must detect same-title/different-timestamp documents and explicitly surface the conflict.</p>
-      </div>
-      <div class="progress-bar-wrap"><div class="progress-bar-fill progress-fill-amber" style="width:75%"></div></div>
-    </article>
 
-    <!-- Module 5 -->
-    <article class="mod-card" id="module-5">
-      <div class="mod-header">
-        <span class="mod-badge badge-both">both levels</span>
-        <div>
-          <h2 class="mod-title">Module 5 — Evaluation</h2>
-          <p class="mod-subtitle">How to know if your RAG system is actually working</p>
+        <!-- Advanced level -->
+        <div class="spectrum-level" id="level-advanced">
+          <div class="spectrum-level-header">
+            <span class="mod-badge badge-advanced">advanced</span>
+            <h2 class="spectrum-level-title">Scaling &amp; Frontier</h2>
+          </div>
+          <p class="spectrum-level-subtitle">Push beyond standard RAG with agents, graphs, multi-modal retrieval, and MLOps.</p>
+          <div class="concept-grid">
+            <a href="topics/agentic-rag.html" class="concept-pill">
+              <p class="concept-pill-label">Agentic RAG</p>
+              <p class="concept-pill-desc">LLM-driven retrieval loops</p>
+            </a>
+            <a href="topics/graph-rag.html" class="concept-pill">
+              <p class="concept-pill-label">GraphRAG &amp; Knowledge Graphs</p>
+              <p class="concept-pill-desc">Structured relational retrieval</p>
+            </a>
+            <a href="topics/multimodal-rag.html" class="concept-pill">
+              <p class="concept-pill-label">Multi-modal RAG</p>
+              <p class="concept-pill-desc">Images, tables, and beyond</p>
+            </a>
+            <a href="topics/advanced-chunking.html" class="concept-pill">
+              <p class="concept-pill-label">Advanced Chunking</p>
+              <p class="concept-pill-desc">Late chunking, contextual retrieval</p>
+            </a>
+            <a href="topics/fine-tuning.html" class="concept-pill">
+              <p class="concept-pill-label">Fine-tuning Embeddings &amp; Re-rankers</p>
+              <p class="concept-pill-desc">Domain-specific model adaptation</p>
+            </a>
+            <a href="topics/query-routing.html" class="concept-pill">
+              <p class="concept-pill-label">Query Routing &amp; Decomposition</p>
+              <p class="concept-pill-desc">Multi-step query strategies</p>
+            </a>
+            <a href="topics/rag-mlops.html" class="concept-pill">
+              <p class="concept-pill-label">RAG Monitoring &amp; MLOps</p>
+              <p class="concept-pill-desc">Observability and drift detection</p>
+            </a>
+            <a href="topics/confidence-tiers.html" class="concept-pill">
+              <p class="concept-pill-label">Confidence Tiers in UI</p>
+              <p class="concept-pill-desc">High, medium, low output display</p>
+            </a>
+          </div>
         </div>
-      </div>
-      <p class="mod-intro">You cannot improve what you do not measure. Evaluation must target each pipeline stage separately; collapsing everything into a single user satisfaction score hides the root cause.</p>
-      <div class="concept-grid">
-        <a href="topics/chunking-eval.html" class="concept-pill">
-          <p class="concept-pill-label">Chunking eval</p>
-          <p class="concept-pill-desc">The most neglected layer</p>
-        </a>
-        <a href="topics/retrieval-metrics.html" class="concept-pill">
-          <p class="concept-pill-label">Recall@K &middot; MRR &middot; NDCG</p>
-          <p class="concept-pill-desc">Three retrieval metrics</p>
-        </a>
-        <a href="topics/faithfulness-metric.html" class="concept-pill">
-          <p class="concept-pill-label">Faithfulness metric</p>
-          <p class="concept-pill-desc">Are claims grounded in context?</p>
-        </a>
-        <a href="topics/eval-sets.html" class="concept-pill">
-          <p class="concept-pill-label">Building eval sets</p>
-          <p class="concept-pill-desc">LLM-assisted annotation</p>
-        </a>
-      </div>
-      <div class="insight-box">
-        <p class="insight-text">Diagnostic trick: if the no-answer rate spikes, check whether Recall@K on your eval set degraded at the same time. If yes → retrieval broke. If no → documentation gap.</p>
-      </div>
-      <div class="progress-bar-wrap"><div class="progress-bar-fill progress-fill-blue" style="width:88%"></div></div>
-    </article>
 
-    <!-- Module 6 -->
-    <article class="mod-card" id="module-6">
-      <div class="mod-header">
-        <span class="mod-badge badge-medium">intermediate</span>
-        <div>
-          <h2 class="mod-title">Module 6 — Online monitoring &amp; continuous improvement</h2>
-          <p class="mod-subtitle">A RAG system at launch is not a finished product</p>
-        </div>
       </div>
-      <p class="mod-intro">The query distribution shifts as the company changes. Documents go stale the moment they are updated. The system that ships is the worst version it will ever be — if you close the loop correctly.</p>
-      <div class="step-row"><div class="step-num">1</div><div><p class="step-text">Query drift monitoring — track embedding distribution of incoming queries with a rolling 30-day window</p><p class="step-sub">A drift spike means users are asking about topics not yet covered in the corpus.</p></div></div>
-      <div class="step-row"><div class="step-num">2</div><div><p class="step-text">Per-query quality metrics — rolling faithfulness rate, no-answer rate, P95 latency by pipeline stage</p><p class="step-sub">P95 latency must be broken down by stage. If P95 degrades, you need to know which stage is the bottleneck.</p></div></div>
-      <div class="step-row"><div class="step-num">3</div><div><p class="step-text">Corpus health probes — after every weekly batch, run known QA pairs against the top 100 most-queried documents</p><p class="step-sub">If Recall@K drops on a high-traffic document after an update, the update silently broke retrieval for that topic.</p></div></div>
-      <div class="step-row"><div class="step-num">4</div><div><p class="step-text">Fine-tuning feedback loop — use labeled production signals to periodically retrain the embedding model and re-ranker</p><p class="step-sub">Exposure bias caution: counter with hard negative mining and epsilon-greedy exploration.</p></div></div>
-      <div class="analogy-box">
-        <p class="analogy-text">The loop in one sentence: monitor for drift → identify the failing stage → trace it to corpus gap or technical regression → fix the right thing → re-evaluate → ship.</p>
-      </div>
-      <div class="progress-bar-wrap"><div class="progress-bar-fill progress-fill-blue" style="width:100%"></div></div>
-    </article>
+    </section>
 
     <hr class="section-divider">
     <div class="bottom-actions">
-      <a href="topics/common-mistakes.html" class="action-btn">Common mistakes</a>
-      <a href="topics/what-next.html" class="action-btn">What to learn next</a>
+      <a href="topics/common-mistakes.html" class="action-btn">Common Mistakes</a>
+      <a href="topics/what-next.html" class="action-btn">What to Learn Next</a>
     </div>
   </main>
 

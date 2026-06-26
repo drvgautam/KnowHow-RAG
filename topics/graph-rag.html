@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GraphRAG & Knowledge Graphs — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html" class="back-link">&larr; Back to Roadmap</a>
+    <span class="mod-badge badge-advanced topic-badge">advanced</span>
+    <h1 class="topic-title">GraphRAG &amp; Knowledge Graphs</h1>
+    <p class="topic-subtitle">When flat document chunks aren't enough — retrieval over structured relationships</p>
+
+    <div class="topic-section">
+      <h3>The limitation of flat RAG</h3>
+      <p>Standard RAG retrieves chunks of text and trusts the LLM to stitch them together. This fails for questions that require understanding relationships across documents: "Who reports to the VP of Engineering, and which teams shipped features last quarter?" No single chunk contains this answer — it requires traversing organizational and project relationships.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>What is GraphRAG?</h3>
+      <p>GraphRAG augments traditional vector retrieval with a knowledge graph — a structured representation of entities (people, products, policies) and their relationships (reports-to, belongs-to, supersedes). Retrieval can now follow relationship edges, not just embedding similarity.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>Building the knowledge graph</h3>
+      <ol>
+        <li><strong>Entity extraction:</strong> Use an LLM or NER model to identify entities in each document — people, teams, products, dates, policies.</li>
+        <li><strong>Relationship extraction:</strong> Identify how entities relate: "Alice manages the Platform team," "Policy v3.2 supersedes Policy v3.1."</li>
+        <li><strong>Graph construction:</strong> Store entities as nodes and relationships as edges in a graph database (Neo4j, Amazon Neptune, or even a property graph in PostgreSQL).</li>
+        <li><strong>Community detection:</strong> Group densely connected entities into communities. Each community gets a summary that enables high-level queries ("What's happening in the Platform team?").</li>
+      </ol>
+    </div>
+
+    <div class="topic-section">
+      <h3>Hybrid retrieval: graph + vector</h3>
+      <p>The most effective approach combines both:</p>
+      <ul>
+        <li><strong>Vector search</strong> finds relevant text chunks (the "what")</li>
+        <li><strong>Graph traversal</strong> finds related entities and context (the "who, when, how connected")</li>
+        <li>The combined context gives the LLM both the specific passage and its structural context</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>When GraphRAG shines</h3>
+      <ul>
+        <li>Questions about organizational structure and reporting lines</li>
+        <li>Tracing policy lineage (which version superseded which)</li>
+        <li>Multi-entity questions ("Which products from Team A integrate with Team B's API?")</li>
+        <li>Summarization across a topic cluster, not just a single document</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Costs and complexity</h3>
+      <p>GraphRAG adds significant complexity: entity extraction is imperfect (expect 80-90% precision), graph maintenance requires re-extraction when documents change, and graph queries add latency. Start with standard RAG and add graph capabilities only when flat retrieval demonstrably fails on your query patterns.</p>
+    </div>
+
+    <div class="insight-box">
+      <p class="insight-text">Microsoft's GraphRAG paper showed that community summaries dramatically improved answers to global questions ("What are the main themes in this dataset?") where standard RAG retrieved too many disconnected fragments to synthesize coherently.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="agentic-rag.html">&larr; Agentic RAG</a>
+      <a href="multimodal-rag.html">Multi-modal RAG &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic RAG — KnowHow RAG</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <a href="../index.html" class="logo">KnowHow <span class="logo-accent">RAG</span></a>
+  </header>
+  <main class="content topic-page">
+    <a href="../index.html" class="back-link">&larr; Back to Roadmap</a>
+    <span class="mod-badge badge-advanced topic-badge">advanced</span>
+    <h1 class="topic-title">Agentic RAG</h1>
+    <p class="topic-subtitle">When the system reasons about what to retrieve, not just how</p>
+
+    <div class="topic-section">
+      <h3>Beyond single-shot retrieval</h3>
+      <p>Standard RAG follows a fixed pipeline: embed query, retrieve, re-rank, generate. Agentic RAG adds a reasoning loop — the LLM decides <em>what</em> to search for, evaluates the results, and may search again with a refined query before generating the final answer.</p>
+    </div>
+
+    <div class="topic-section">
+      <h3>The agent loop</h3>
+      <ol>
+        <li><strong>Plan:</strong> The agent analyzes the user's question and determines what information it needs. A complex question like "Compare our parental leave with industry standards" might require two separate retrievals.</li>
+        <li><strong>Retrieve:</strong> The agent issues one or more targeted searches, potentially against different knowledge bases or with different query formulations.</li>
+        <li><strong>Evaluate:</strong> The agent assesses whether the retrieved context is sufficient. If not, it reformulates and retrieves again.</li>
+        <li><strong>Synthesize:</strong> Once satisfied with the evidence, the agent generates the final answer with citations.</li>
+      </ol>
+    </div>
+
+    <div class="topic-section">
+      <h3>Key patterns</h3>
+      <ul>
+        <li><strong>Multi-step retrieval:</strong> Break complex questions into sub-queries. "How did our revenue change after launching feature X?" requires retrieving both revenue data and the feature launch timeline.</li>
+        <li><strong>Self-RAG:</strong> The model generates retrieval tokens that trigger searches mid-generation. It decides on-the-fly when it needs more evidence, rather than front-loading all retrieval.</li>
+        <li><strong>Tool-augmented RAG:</strong> The agent can call APIs, run SQL queries, or execute code in addition to searching documents. The knowledge base is just one tool among many.</li>
+        <li><strong>Corrective RAG (CRAG):</strong> After initial retrieval, a lightweight evaluator scores relevance. Low scores trigger query refinement and re-retrieval before generation.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>When to use agentic RAG</h3>
+      <ul>
+        <li><strong>Good fit:</strong> Multi-hop questions, comparative analysis, questions requiring multiple data sources, research-style queries.</li>
+        <li><strong>Poor fit:</strong> Simple factoid lookups ("What's the phone number for HR?"), latency-critical applications, high-volume support chatbots.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h3>Cost and latency trade-offs</h3>
+      <p>Each agent loop iteration adds 1-3 seconds and one LLM call. A 3-step agent loop costs 3x the tokens and 3x the latency of single-shot RAG. Use it selectively — route simple questions to the fast path and complex questions to the agent path.</p>
+    </div>
+
+    <div class="warning-box">
+      <p class="warning-text">Agent loops can get stuck in infinite retrieval cycles. Always set a maximum iteration count (typically 3-5) and a total latency budget. If the agent hasn't found sufficient evidence by the limit, it should say so rather than keep searching.</p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="graph-rag.html">GraphRAG &rarr;</a>
+      <a href="query-routing.html">Query routing &rarr;</a>
+    </div>
+  </main>
+  <footer class="site-footer"><p>KnowHow RAG</p></footer>
+</div>
+</body>
+</html>
