@@ -76,38 +76,47 @@ body {
 .hero-sub { font-size: 15px; color: var(--color-text-secondary); max-width: 520px; margin: 0 auto; }
 
 /* Roadmap spectrum */
-.roadmap { position: relative; padding: 0 0 2rem; }
-
 .roadmap-level {
   display: grid;
   grid-template-columns: 40px 1fr;
-  gap: 0;
-  position: relative;
-  padding: 0 0 2rem;
+  gap: 0 20px;
+}
+
+.roadmap-transition {
+  min-height: 0;
+}
+.roadmap-transition .roadmap-bar {
+  min-height: 32px;
 }
 
 .roadmap-track {
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
 }
 
 .roadmap-bar {
   width: 6px;
   flex: 1;
-  border-radius: 3px;
-  min-height: 40px;
+  border-radius: 0;
+  min-height: 20px;
 }
-.bar-green { background: linear-gradient(to bottom, var(--color-green), var(--color-green)); }
+.roadmap-level:first-of-type .roadmap-bar {
+  border-radius: 3px 3px 0 0;
+}
+.roadmap-level:last-of-type .roadmap-bar {
+  border-radius: 0 0 3px 3px;
+}
+
+.bar-green { background: var(--color-green); }
 .bar-green-to-amber { background: linear-gradient(to bottom, var(--color-green), var(--color-amber)); }
-.bar-amber { background: linear-gradient(to bottom, var(--color-amber), var(--color-amber)); }
+.bar-amber { background: var(--color-amber); }
 .bar-amber-to-red { background: linear-gradient(to bottom, var(--color-amber), var(--color-red)); }
-.bar-red { background: linear-gradient(to bottom, var(--color-red), var(--color-red)); }
+.bar-red { background: var(--color-red); }
 
 .roadmap-dot {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   border: 3px solid var(--color-bg);
   flex-shrink: 0;
@@ -118,20 +127,30 @@ body {
 .dot-amber { background: var(--color-amber); }
 .dot-red { background: var(--color-red); }
 
-.roadmap-content { padding: 0 0 0 16px; }
+.roadmap-content {
+  padding: 0 0 1.5rem 0;
+}
+.roadmap-transition .roadmap-content {
+  padding: 0;
+}
+
+.roadmap-subtitle {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-bottom: 14px;
+}
 
 .level-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   padding-top: 0;
 }
 .level-title { font-size: 18px; font-weight: 700; }
 .level-title-green { color: var(--color-green); }
 .level-title-amber { color: var(--color-amber); }
 .level-title-red { color: var(--color-red); }
-.level-subtitle { font-size: 13px; color: var(--color-text-secondary); margin-left: auto; }
 
 /* Module cards */
 .mod-card {
@@ -190,7 +209,7 @@ body {
 /* Concept grid */
 .concept-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 10px;
   margin: 0 0 8px;
 }
@@ -314,5 +333,5 @@ pre.code-block {
   .concept-grid { grid-template-columns: 1fr; }
   .mod-card { padding: 1rem; }
   .level-header { flex-direction: column; align-items: flex-start; gap: 4px; }
-  .level-subtitle { margin-left: 0; }
+  .roadmap-level { grid-template-columns: 28px 1fr; gap: 0 12px; }
 }

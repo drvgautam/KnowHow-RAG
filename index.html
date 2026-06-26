@@ -5,67 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KnowHow RAG — Learn Retrieval-Augmented Generation</title>
 <link rel="stylesheet" href="css/style.css">
-<style>
-  /* Spectrum roadmap styles */
-  .spectrum-section { margin-bottom: 3rem; }
-  .spectrum-roadmap {
-    display: grid;
-    grid-template-columns: 40px 1fr;
-    gap: 0 24px;
-    position: relative;
-  }
-  .spectrum-bar {
-    width: 8px;
-    border-radius: 4px;
-    background: linear-gradient(to bottom, var(--color-green), var(--color-amber), var(--color-red));
-    grid-row: 1 / -1;
-    justify-self: center;
-    position: relative;
-  }
-  .spectrum-marker {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 3px solid var(--color-bg);
-    box-shadow: 0 0 0 2px var(--color-border);
-  }
-  .spectrum-marker-beginner {
-    top: 8%;
-    background: var(--color-green);
-  }
-  .spectrum-marker-intermediate {
-    top: 45%;
-    background: var(--color-amber);
-  }
-  .spectrum-marker-advanced {
-    top: 82%;
-    background: var(--color-red);
-  }
-  .spectrum-level {
-    padding-bottom: 2.5rem;
-  }
-  .spectrum-level:last-child {
-    padding-bottom: 0;
-  }
-  .spectrum-level-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-  .spectrum-level-title {
-    font-size: 17px;
-    font-weight: 600;
-  }
-  .spectrum-level-subtitle {
-    font-size: 13px;
-    color: var(--color-text-secondary);
-    margin-bottom: 14px;
-  }
-</style>
 </head>
 <body>
 <div class="app-shell">
@@ -80,145 +19,166 @@
       <p class="hero-sub">A visual roadmap from first concepts to production-grade systems. Find your level and start learning.</p>
     </section>
 
-    <section class="spectrum-section">
-      <div class="spectrum-roadmap">
-
-        <!-- Gradient bar with level markers -->
-        <div class="spectrum-bar">
-          <span class="spectrum-marker spectrum-marker-beginner"></span>
-          <span class="spectrum-marker spectrum-marker-intermediate"></span>
-          <span class="spectrum-marker spectrum-marker-advanced"></span>
+    <!-- Beginner -->
+    <section class="roadmap-level" id="level-beginner">
+      <div class="roadmap-track">
+        <span class="roadmap-dot dot-green"></span>
+        <div class="roadmap-bar bar-green"></div>
+      </div>
+      <div class="roadmap-content">
+        <div class="level-header">
+          <span class="mod-badge badge-beginner">beginner</span>
+          <h2 class="level-title level-title-green">RAG Foundations</h2>
         </div>
-
-        <!-- Beginner level -->
-        <div class="spectrum-level" id="level-beginner">
-          <div class="spectrum-level-header">
-            <span class="mod-badge badge-beginner">beginner</span>
-            <h2 class="spectrum-level-title">RAG Foundations</h2>
-          </div>
-          <p class="spectrum-level-subtitle">Understand why RAG exists and the core building blocks before writing any code.</p>
-          <div class="concept-grid">
-            <a href="topics/llm-hallucination.html" class="concept-pill">
-              <p class="concept-pill-label">LLM Hallucination</p>
-              <p class="concept-pill-desc">Why models invent facts</p>
-            </a>
-            <a href="topics/knowledge-cutoff.html" class="concept-pill">
-              <p class="concept-pill-label">Knowledge Cutoff</p>
-              <p class="concept-pill-desc">Training data freezes in time</p>
-            </a>
-            <a href="topics/rag-overview.html" class="concept-pill">
-              <p class="concept-pill-label">RAG Overview</p>
-              <p class="concept-pill-desc">Search first, then generate</p>
-            </a>
-            <a href="topics/embeddings.html" class="concept-pill">
-              <p class="concept-pill-label">Text Embeddings</p>
-              <p class="concept-pill-desc">Numbers that capture meaning</p>
-            </a>
-            <a href="topics/chunking.html" class="concept-pill">
-              <p class="concept-pill-label">Chunking Basics</p>
-              <p class="concept-pill-desc">Splitting documents for retrieval</p>
-            </a>
-            <a href="topics/hnsw.html" class="concept-pill">
-              <p class="concept-pill-label">Vector Databases &amp; HNSW</p>
-              <p class="concept-pill-desc">Fast approximate nearest neighbors</p>
-            </a>
-          </div>
+        <p class="roadmap-subtitle">Understand why RAG exists and the core building blocks before writing any code.</p>
+        <div class="concept-grid">
+          <a href="topics/llm-hallucination.html" class="concept-pill">
+            <p class="concept-pill-label">LLM Hallucination</p>
+            <p class="concept-pill-desc">Why models invent facts</p>
+          </a>
+          <a href="topics/knowledge-cutoff.html" class="concept-pill">
+            <p class="concept-pill-label">Knowledge Cutoff</p>
+            <p class="concept-pill-desc">Training data freezes in time</p>
+          </a>
+          <a href="topics/rag-overview.html" class="concept-pill">
+            <p class="concept-pill-label">RAG Overview</p>
+            <p class="concept-pill-desc">Search first, then generate</p>
+          </a>
+          <a href="topics/embeddings.html" class="concept-pill">
+            <p class="concept-pill-label">Text Embeddings</p>
+            <p class="concept-pill-desc">Numbers that capture meaning</p>
+          </a>
+          <a href="topics/chunking.html" class="concept-pill">
+            <p class="concept-pill-label">Chunking Basics</p>
+            <p class="concept-pill-desc">Splitting documents for retrieval</p>
+          </a>
+          <a href="topics/hnsw.html" class="concept-pill">
+            <p class="concept-pill-label">Vector Databases &amp; HNSW</p>
+            <p class="concept-pill-desc">Fast approximate nearest neighbors</p>
+          </a>
         </div>
+      </div>
+    </section>
 
-        <!-- Intermediate level -->
-        <div class="spectrum-level" id="level-intermediate">
-          <div class="spectrum-level-header">
-            <span class="mod-badge badge-medium">intermediate</span>
-            <h2 class="spectrum-level-title">Production RAG</h2>
-          </div>
-          <p class="spectrum-level-subtitle">Build, evaluate, and harden a RAG system for real users and real data.</p>
-          <div class="concept-grid">
-            <a href="topics/offline-pipeline.html" class="concept-pill">
-              <p class="concept-pill-label">Offline Indexing Pipeline</p>
-              <p class="concept-pill-desc">Batch ingestion and indexing</p>
-            </a>
-            <a href="topics/online-pipeline.html" class="concept-pill">
-              <p class="concept-pill-label">Online Serving Pipeline</p>
-              <p class="concept-pill-desc">Query-time retrieval and generation</p>
-            </a>
-            <a href="topics/rrf.html" class="concept-pill">
-              <p class="concept-pill-label">Hybrid Retrieval &amp; RRF</p>
-              <p class="concept-pill-desc">Fusing dense and sparse results</p>
-            </a>
-            <a href="topics/bi-vs-cross-encoder.html" class="concept-pill">
-              <p class="concept-pill-label">Bi-encoder vs Cross-encoder</p>
-              <p class="concept-pill-desc">Speed versus accuracy trade-off</p>
-            </a>
-            <a href="topics/hyde.html" class="concept-pill">
-              <p class="concept-pill-label">HyDE Technique</p>
-              <p class="concept-pill-desc">Embed hypothetical answers</p>
-            </a>
-            <a href="topics/confidence-gate.html" class="concept-pill">
-              <p class="concept-pill-label">Guardrails &amp; Confidence Gates</p>
-              <p class="concept-pill-desc">Stop before calling the LLM</p>
-            </a>
-            <a href="topics/citation-enforcement.html" class="concept-pill">
-              <p class="concept-pill-label">Citation Enforcement</p>
-              <p class="concept-pill-desc">Every claim needs a source</p>
-            </a>
-            <a href="topics/faithfulness-scoring.html" class="concept-pill">
-              <p class="concept-pill-label">Faithfulness Scoring (NLI)</p>
-              <p class="concept-pill-desc">Post-generation grounding checks</p>
-            </a>
-            <a href="topics/retrieval-metrics.html" class="concept-pill">
-              <p class="concept-pill-label">Retrieval Metrics (Recall@K, MRR, NDCG)</p>
-              <p class="concept-pill-desc">Measuring retrieval quality</p>
-            </a>
-            <a href="topics/eval-sets.html" class="concept-pill">
-              <p class="concept-pill-label">Building Evaluation Sets</p>
-              <p class="concept-pill-desc">LLM-assisted annotation pipelines</p>
-            </a>
-          </div>
+    <!-- Transition bar: green to amber -->
+    <section class="roadmap-level roadmap-transition">
+      <div class="roadmap-track">
+        <div class="roadmap-bar bar-green-to-amber"></div>
+      </div>
+      <div class="roadmap-content"></div>
+    </section>
+
+    <!-- Intermediate -->
+    <section class="roadmap-level" id="level-intermediate">
+      <div class="roadmap-track">
+        <span class="roadmap-dot dot-amber"></span>
+        <div class="roadmap-bar bar-amber"></div>
+      </div>
+      <div class="roadmap-content">
+        <div class="level-header">
+          <span class="mod-badge badge-medium">intermediate</span>
+          <h2 class="level-title level-title-amber">Production RAG</h2>
         </div>
-
-        <!-- Advanced level -->
-        <div class="spectrum-level" id="level-advanced">
-          <div class="spectrum-level-header">
-            <span class="mod-badge badge-advanced">advanced</span>
-            <h2 class="spectrum-level-title">Scaling &amp; Frontier</h2>
-          </div>
-          <p class="spectrum-level-subtitle">Push beyond standard RAG with agents, graphs, multi-modal retrieval, and MLOps.</p>
-          <div class="concept-grid">
-            <a href="topics/agentic-rag.html" class="concept-pill">
-              <p class="concept-pill-label">Agentic RAG</p>
-              <p class="concept-pill-desc">LLM-driven retrieval loops</p>
-            </a>
-            <a href="topics/graph-rag.html" class="concept-pill">
-              <p class="concept-pill-label">GraphRAG &amp; Knowledge Graphs</p>
-              <p class="concept-pill-desc">Structured relational retrieval</p>
-            </a>
-            <a href="topics/multimodal-rag.html" class="concept-pill">
-              <p class="concept-pill-label">Multi-modal RAG</p>
-              <p class="concept-pill-desc">Images, tables, and beyond</p>
-            </a>
-            <a href="topics/advanced-chunking.html" class="concept-pill">
-              <p class="concept-pill-label">Advanced Chunking</p>
-              <p class="concept-pill-desc">Late chunking, contextual retrieval</p>
-            </a>
-            <a href="topics/fine-tuning.html" class="concept-pill">
-              <p class="concept-pill-label">Fine-tuning Embeddings &amp; Re-rankers</p>
-              <p class="concept-pill-desc">Domain-specific model adaptation</p>
-            </a>
-            <a href="topics/query-routing.html" class="concept-pill">
-              <p class="concept-pill-label">Query Routing &amp; Decomposition</p>
-              <p class="concept-pill-desc">Multi-step query strategies</p>
-            </a>
-            <a href="topics/rag-mlops.html" class="concept-pill">
-              <p class="concept-pill-label">RAG Monitoring &amp; MLOps</p>
-              <p class="concept-pill-desc">Observability and drift detection</p>
-            </a>
-            <a href="topics/confidence-tiers.html" class="concept-pill">
-              <p class="concept-pill-label">Confidence Tiers in UI</p>
-              <p class="concept-pill-desc">High, medium, low output display</p>
-            </a>
-          </div>
+        <p class="roadmap-subtitle">Build, evaluate, and harden a RAG system for real users and real data.</p>
+        <div class="concept-grid">
+          <a href="topics/offline-pipeline.html" class="concept-pill">
+            <p class="concept-pill-label">Offline Indexing Pipeline</p>
+            <p class="concept-pill-desc">Batch ingestion and indexing</p>
+          </a>
+          <a href="topics/online-pipeline.html" class="concept-pill">
+            <p class="concept-pill-label">Online Serving Pipeline</p>
+            <p class="concept-pill-desc">Query-time retrieval and generation</p>
+          </a>
+          <a href="topics/rrf.html" class="concept-pill">
+            <p class="concept-pill-label">Hybrid Retrieval &amp; RRF</p>
+            <p class="concept-pill-desc">Fusing dense and sparse results</p>
+          </a>
+          <a href="topics/bi-vs-cross-encoder.html" class="concept-pill">
+            <p class="concept-pill-label">Bi-encoder vs Cross-encoder</p>
+            <p class="concept-pill-desc">Speed versus accuracy trade-off</p>
+          </a>
+          <a href="topics/hyde.html" class="concept-pill">
+            <p class="concept-pill-label">HyDE Technique</p>
+            <p class="concept-pill-desc">Embed hypothetical answers</p>
+          </a>
+          <a href="topics/confidence-gate.html" class="concept-pill">
+            <p class="concept-pill-label">Guardrails &amp; Confidence Gates</p>
+            <p class="concept-pill-desc">Stop before calling the LLM</p>
+          </a>
+          <a href="topics/citation-enforcement.html" class="concept-pill">
+            <p class="concept-pill-label">Citation Enforcement</p>
+            <p class="concept-pill-desc">Every claim needs a source</p>
+          </a>
+          <a href="topics/faithfulness-scoring.html" class="concept-pill">
+            <p class="concept-pill-label">Faithfulness Scoring (NLI)</p>
+            <p class="concept-pill-desc">Post-generation grounding checks</p>
+          </a>
+          <a href="topics/retrieval-metrics.html" class="concept-pill">
+            <p class="concept-pill-label">Retrieval Metrics</p>
+            <p class="concept-pill-desc">Recall@K, MRR, NDCG</p>
+          </a>
+          <a href="topics/eval-sets.html" class="concept-pill">
+            <p class="concept-pill-label">Building Evaluation Sets</p>
+            <p class="concept-pill-desc">LLM-assisted annotation pipelines</p>
+          </a>
         </div>
+      </div>
+    </section>
 
+    <!-- Transition bar: amber to red -->
+    <section class="roadmap-level roadmap-transition">
+      <div class="roadmap-track">
+        <div class="roadmap-bar bar-amber-to-red"></div>
+      </div>
+      <div class="roadmap-content"></div>
+    </section>
+
+    <!-- Advanced -->
+    <section class="roadmap-level" id="level-advanced">
+      <div class="roadmap-track">
+        <span class="roadmap-dot dot-red"></span>
+        <div class="roadmap-bar bar-red"></div>
+      </div>
+      <div class="roadmap-content">
+        <div class="level-header">
+          <span class="mod-badge badge-advanced">advanced</span>
+          <h2 class="level-title level-title-red">Scaling &amp; Frontier</h2>
+        </div>
+        <p class="roadmap-subtitle">Push beyond standard RAG with agents, graphs, multi-modal retrieval, and MLOps.</p>
+        <div class="concept-grid">
+          <a href="topics/agentic-rag.html" class="concept-pill">
+            <p class="concept-pill-label">Agentic RAG</p>
+            <p class="concept-pill-desc">LLM-driven retrieval loops</p>
+          </a>
+          <a href="topics/graph-rag.html" class="concept-pill">
+            <p class="concept-pill-label">GraphRAG &amp; Knowledge Graphs</p>
+            <p class="concept-pill-desc">Structured relational retrieval</p>
+          </a>
+          <a href="topics/multimodal-rag.html" class="concept-pill">
+            <p class="concept-pill-label">Multi-modal RAG</p>
+            <p class="concept-pill-desc">Images, tables, and beyond</p>
+          </a>
+          <a href="topics/advanced-chunking.html" class="concept-pill">
+            <p class="concept-pill-label">Advanced Chunking</p>
+            <p class="concept-pill-desc">Late chunking, contextual retrieval</p>
+          </a>
+          <a href="topics/fine-tuning.html" class="concept-pill">
+            <p class="concept-pill-label">Fine-tuning Embeddings</p>
+            <p class="concept-pill-desc">Domain-specific model adaptation</p>
+          </a>
+          <a href="topics/query-routing.html" class="concept-pill">
+            <p class="concept-pill-label">Query Routing</p>
+            <p class="concept-pill-desc">Decomposition &amp; multi-step strategies</p>
+          </a>
+          <a href="topics/rag-mlops.html" class="concept-pill">
+            <p class="concept-pill-label">RAG Monitoring &amp; MLOps</p>
+            <p class="concept-pill-desc">Observability and drift detection</p>
+          </a>
+          <a href="topics/confidence-tiers.html" class="concept-pill">
+            <p class="concept-pill-label">Confidence Tiers in UI</p>
+            <p class="concept-pill-desc">High, medium, low output display</p>
+          </a>
+        </div>
       </div>
     </section>
 
